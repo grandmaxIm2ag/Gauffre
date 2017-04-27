@@ -22,16 +22,17 @@ public class Plateau extends ComposantGraphique{
         observable  = new Observable();
         composant = new LinkedList();
         
-        composant.add(new Poison(0,0, 1, 1));
-        
         poison = p;
+        this.ajoutComposant(new Poison(poison.x(), poison.y(), 1, 1));
+        
+      
         tailleInitiale = taille;
         for(int i=0; i<taille; i++)
             for(int j=0; j<taille; j++)
                 if(poison.equals(new Point(i,j)))
-                    composant.add(new Case(i,j,1,1,true));
+                    this.ajoutComposant(new Case(i,j,1,1,true));
                 else
-                    composant.add(new Case(i,j,1,1));
+                    this.ajoutComposant(new Case(i,j,1,1));
         
         
     }
@@ -42,7 +43,7 @@ public class Plateau extends ComposantGraphique{
     public void ajoutComposant(ComposantGraphique comp){
         Plateau p = this;
         composant.add(comp);
-        this.accept(new Visiteur(){
+        comp.accept(new Visiteur(){
             public boolean visite(Case c){
                 p.ajoutObservateur(c);
                 return false;
@@ -51,9 +52,17 @@ public class Plateau extends ComposantGraphique{
     }
     public void supprimeObservateur(Observateur obs){
         observable.supprime(obs);
+        
     }
     public void supprimeComposant(ComposantGraphique comp){
         composant.remove(comp);
+        Plateau p = this;
+        comp.accept(new Visiteur(){
+            public boolean visite(Case c){
+                p.supprimeObservateur(c);
+                return false;
+            }
+        });
     }
     public boolean maj(Point p){
         return observable.maj(p);
@@ -67,12 +76,20 @@ public class Plateau extends ComposantGraphique{
     public Point poison(){
         return poison;
     }
-
+    public int tailleInitiale(){
+        return tailleInitiale;
+    }
+    public int taille(){
+        return composant.size();
+    }
+    public Observable observable(){
+        return observable;
+    }
     @Override
     public boolean equals(Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+ 
     @Override
     public boolean accept(Visiteur v) {
         boolean b = false;
@@ -85,7 +102,5 @@ public class Plateau extends ComposantGraphique{
         
         return b;
     }
-    
-    
-    
+
 }

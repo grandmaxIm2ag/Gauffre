@@ -31,4 +31,13 @@ public class Observable {
         }
         return b;
     }
+    public int size(){
+        return observateurs.size();
+    }
+    public boolean contains(Observateur o){
+        return observateurs.contains(o);
+    }
+    public List<Observateur> observateurs(){
+        return observateurs;
+    }
 }

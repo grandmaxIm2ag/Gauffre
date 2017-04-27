@@ -29,6 +29,8 @@ public class TPoint {
         assertEquals(p.y(), 2);
         assertTrue(p.equals(new Point(1,2)));
         assertFalse(p.equals(new Point(1,1)));
+        p = new Point("(0,0)");
+        assertEquals(p, new Point(0,0));
     }
     
     @Test
