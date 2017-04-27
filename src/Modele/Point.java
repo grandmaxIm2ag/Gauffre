@@ -27,4 +27,16 @@ public class Point {
     public int y(){
         return y;
     }
+    
+    public boolean equals(Object o){
+        if(o instanceof Point){
+            Point p = (Point) o;
+            return (p.x()==x && p.y()==y);
+        }
+        return false;
+    }
+    
+    public String toString(){
+        return "("+x+","+y+")";
+    }
 }

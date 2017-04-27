@@ -13,9 +13,14 @@ import Modele.*;
 public class Ordinateur extends Joueur{
     Plateau p;
     
-    public Ordinateur(int x, int y, int larg, int haut, Plateau p) {
-        super(x, y, larg, haut);
+    public Ordinateur(int x, int y, int larg, int haut, boolean main, Plateau p) {
+        super(x, y, larg, haut, main);
         this.p = p;
+    }
+
+    @Override
+    public boolean equals() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

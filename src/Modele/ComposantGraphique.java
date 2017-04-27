@@ -22,6 +22,27 @@ public abstract class ComposantGraphique {
         h = haut;
     }
     
+    public void setLocation(int x, int y){
+        p.fixe(x, y);
+    }
+    public int h(){
+        return h;
+    }
+    public int l(){
+        return l;
+    }
+    public int x(){
+        return p.x();
+    }
+    public int y(){
+        return p.y();
+    }
+    public Point location(){
+        return p;
+    }
+    
+    public abstract boolean equals();
+    
     public abstract boolean accept();
     
 }
