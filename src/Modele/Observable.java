@@ -40,4 +40,22 @@ public class Observable {
     public List<Observateur> observateurs(){
         return observateurs;
     }
+    public String historique(Point p){
+        String res = p.toString();
+        Point tmp;
+        
+        Iterator<Observateur> it = observateurs.iterator();
+        while(it.hasNext()){
+            Observateur o = it.next();
+            if(o instanceof Case){
+                Case c = (Case) it.next();
+                tmp = c.location();
+                if(!tmp.equals(p) && tmp.x()>=p.x() && tmp.y()>=p.y() && !c.detruit()){
+                    res += (":"+tmp);
+                }
+            }
+        
+        }
+        return res;
+    }
 }
