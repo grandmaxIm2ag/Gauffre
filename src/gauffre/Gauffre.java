@@ -5,6 +5,8 @@
  */
 package gauffre;
 
+import Joueurs.Ordinateur;
+
 /**
  *
  * @author grandmax
@@ -16,7 +18,10 @@ public class Gauffre {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        //test
+        Ordinateur m = new Ordinateur(0,0,0,0,true,null,0);
+        m.convert();
+        m.affiche();
+       // System.out.println(8/3);
     }
     
 }
