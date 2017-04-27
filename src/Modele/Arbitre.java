@@ -10,5 +10,10 @@ package Modele;
  * @author grandmax
  */
 public class Arbitre {
+    Plateau p;
     
+    
+    public Plateau plateau(){
+        return p;
+    }
 }

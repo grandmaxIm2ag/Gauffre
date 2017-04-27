@@ -89,7 +89,7 @@ public class Plateau extends ComposantGraphique{
     public boolean equals(Object o) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+ 
     @Override
     public boolean accept(Visiteur v) {
         boolean b = false;
@@ -102,7 +102,5 @@ public class Plateau extends ComposantGraphique{
         
         return b;
     }
-    
-    
-    
+
 }
