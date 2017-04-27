@@ -9,25 +9,24 @@ package Modele;
  *
  * @author grandmax
  */
-public class Poison extends ComposantGraphique implements Observateur{
+public class Poison extends ComposantGraphique{
 
     public Poison(int x, int y, int larg, int haut) {
         super(x, y, larg, haut);
     }
 
     @Override
-    public boolean accept() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean accept(Visiteur v) {
+        return v.visite(this);
     }
 
     @Override
-    public void maj() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean equals() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean equals(Object o) {
+        if(o instanceof Poison){
+            Poison c = (Poison)o;
+            return(p.equals(c.location()) && l==c.l() && h==c.h());
+        }
+        return false;
     }
     
 }

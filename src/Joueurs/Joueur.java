@@ -31,7 +31,7 @@ public abstract class Joueur extends ComposantGraphique{
         main = !main;
     }
     @Override
-    public boolean accept() {
+    public boolean accept(Visiteur v) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

@@ -11,5 +11,5 @@ package Modele;
  */
 public interface Observateur {
     
-    public abstract void maj();
+    public abstract boolean maj(Point p);
 }

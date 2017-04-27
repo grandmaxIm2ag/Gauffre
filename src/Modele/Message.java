@@ -14,18 +14,25 @@ public class Message extends ComposantGraphique{
     
     public Message(int x, int y, int larg, int haut, String m) {
         super(x, y, larg, haut);
-        message =
-                m;
+        message = m;
+    }
+    
+    public String message(){
+        return message;
     }
 
     @Override
-    public boolean accept() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean accept(Visiteur v) {
+        return v.visite(this);
     }
 
     @Override
-    public boolean equals() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean equals(Object o) {
+        if(o instanceof Message){
+            Message c = (Message)o;
+            return(p.equals(c.location()) && l==c.l() && h==c.h() && message.equals(c.message()));
+        }
+        return false;
     }
     
 }

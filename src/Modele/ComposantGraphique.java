@@ -41,8 +41,8 @@ public abstract class ComposantGraphique {
         return p;
     }
     
-    public abstract boolean equals();
+    public abstract boolean equals(Object o);
     
-    public abstract boolean accept();
+    public abstract boolean accept(Visiteur v);
     
 }

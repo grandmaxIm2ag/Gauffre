@@ -17,14 +17,15 @@ public class TComposant {
     ComposantGraphique c;
     public TComposant() {
         c = new ComposantGraphique(0,0,0,0) {
+         
 
             @Override
-            public boolean accept() {
+            public boolean equals(Object o) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
 
             @Override
-            public boolean equals() {
+            public boolean accept(Visiteur v) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
