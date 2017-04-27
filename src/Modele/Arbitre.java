@@ -16,4 +16,8 @@ public class Arbitre {
     public Plateau plateau(){
         return p;
     }
+    
+    public Plateau joue(Point coup){
+        return p;
+    }
 }
