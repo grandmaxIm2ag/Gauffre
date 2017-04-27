@@ -18,6 +18,7 @@ public class Ordinateur extends Joueur{
     public final static long GRAINE = 548789;
     
     Plateau p;
+    Arbitre a;
     int nbColonnes;
     int nbLignes;
     int difficulte;
@@ -31,8 +32,8 @@ public class Ordinateur extends Joueur{
     public Ordinateur(int x, int y, int larg, int haut, boolean main, Plateau p, int dif) {
         super(x, y, larg, haut, main);
         this.p = p;
-        this.nbColonnes=4;//attention! pour g 0<=a<nbcolonnes//mettre à jour avec plateau lorsque disponible//NEEDTOUPDATE
-        this.nbLignes=3;//attention! pour g 0<=b<nblignes//mettre à jour avec plateau lorsque disponible//NEEDTOUPDATE
+        this.nbColonnes=2;//attention! pour g 0<=a<nbcolonnes//mettre à jour avec plateau lorsque disponible//NEEDTOUPDATE
+        this.nbLignes=6;//attention! pour g 0<=b<nblignes//mettre à jour avec plateau lorsque disponible//NEEDTOUPDATE
         difficulte = dif;
         casesJouables= new LinkedList<>();
         //initialisation des cases//rempli g
@@ -47,11 +48,14 @@ public class Ordinateur extends Joueur{
     }
 
     public void joue(){
+        //mettre à jour cout du joueur (p)
         int indiceChoix;
         indiceChoix = (r.nextInt()%(casesJouables.size()));
         int choix=casesJouables.remove(indiceChoix);
+        
+        //this.p = a.joue(p);
         //Parcours
-        //NEEDTOUPDATE//besoin de mettre à jour le plateau
+        //NEEDTOUPDATE//besoin de mettre à jour la liste
         
     }
     
@@ -70,16 +74,16 @@ public class Ordinateur extends Joueur{
             int x = casesJouables.get(k);
             int i=0,j=0;
             while(x/3!=0 || x/2!=0){
-                while(i<nbLignes-1 && x/3!=0){
+                while(i<nbLignes-1 && x/3!=0 && x%3==0){
                     x=x/3;
                     i++;
                 }
-                while(j<nbColonnes-1 && x/2!=0){
+                while(j<nbColonnes-1 && x/2!=0 && x%2==0){
                     x=x/2;
                     j++;
                 }
             }    
-            System.out.println(i+" , "+j);
+           // System.out.println(i+" , "+j);
             mat[i][j] = casesJouables.get(k);
         }
     }

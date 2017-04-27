@@ -21,6 +21,7 @@ public class Gauffre {
         Ordinateur m = new Ordinateur(0,0,0,0,true,null,0);
         m.convert();
         m.affiche();
+       // System.out.println(8/3);
     }
     
 }
