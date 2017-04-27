@@ -18,7 +18,7 @@ public abstract class ComposantGraphique {
     
     public ComposantGraphique(int x, int y, int larg, int haut){
         p = new Point(x,y);
-        l = haut;
+        l = larg;
         h = haut;
     }
     

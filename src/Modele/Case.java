@@ -52,7 +52,7 @@ public class Case extends ComposantGraphique implements Observateur{
     public boolean equals(Object o) {
         if(o instanceof Case){
             Case c = (Case)o;
-            return (p.equals(c.location()) && l==c.l() && h==c.h() && this.empoisonnee()==c.empoisonnee());
+            return (p.equals(c.location()) && l==c.l() && h==c.h() && this.empoisonnee()==c.empoisonnee() );
         }
         return false;
     }
