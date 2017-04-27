@@ -30,6 +30,14 @@ public abstract class Joueur extends ComposantGraphique{
     public void setMain(){
         main = !main;
     }
+    public String getNom(){
+        return nom;
+    }
+    
+    public boolean getMain(){
+        return main;
+    }
+    
     @Override
     public boolean accept() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

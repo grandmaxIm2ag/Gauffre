@@ -29,13 +29,17 @@ public class Plateau extends ComposantGraphique{
         return poison.equals(p);
     }
     
-    @Override
-    public boolean accept() {
+    public boolean accept(Visiteur v) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public boolean equals() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean accept() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
