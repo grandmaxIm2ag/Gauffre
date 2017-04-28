@@ -57,7 +57,16 @@ public class Interface extends Application{
                 System.out.println("Faire un truc !");
             }
         });
+        Button b2 = new Button("Dire \"Jean\""); 
+        b2.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Jean");
+            }
+        });
         paneRight.getChildren().add(b1);
+        paneRight.getChildren().add(b2);
         b.setRight(paneRight);
             
         Scene s;
