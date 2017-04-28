@@ -47,18 +47,7 @@ public class Interface extends Application{
         a.start();
         
         s.setOnKeyPressed(new Touche(arbitre, 1));
-        s.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent me) {
-                System.out.println("Mouse entered"); 
-            }
-        });
-
-        s.setOnMouseExited(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent me) {
-                System.out.println("Mouse exited");
-            }
-        });
-
+       
         s.setOnMousePressed(new Souris(arbitre, 1));
         
         
