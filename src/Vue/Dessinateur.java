@@ -34,7 +34,6 @@ public class Dessinateur extends Visiteur{
         
     @Override
     public boolean visite(Case c){
-        //System.out.println("caca");
         e.fixeComposant(c);
         gc.setStroke(Color.BLACK);
         if (c.empoisonnee())
@@ -43,9 +42,6 @@ public class Dessinateur extends Visiteur{
             gc.setFill(Color.BLUE);
         gc.fillRect(e.posX(), e.posY(), e.l(), e.h());
         gc.strokeRect(e.posX(), e.posY(), e.l(), e.h());
-        //System.out.println("e.posX() : " + e.posX() + " e.posY() : " + e.posY() + " e.l() : " + e.l() + " e.h() : " + e.h());
-        //System.exit(0);
-        //gc.fillRect(0, 0, 20, 20);
         return false;
     }
     @Override 

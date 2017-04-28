@@ -11,6 +11,10 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
 import Modele.Arbitre;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 
 /**
  *
@@ -32,12 +36,30 @@ public class Interface extends Application{
         Scene s;
         s = new Scene(b, 800, 600);
         stage.setScene(s);
-            
-            
-        //arbitre.init();
-        //arbitre.acceptenew DessinateurCanvasJavaFX(c));
         Animation a = new Animation(arbitre, c);
         a.start();
+        
+        
+        s.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent me) {
+                System.out.println("Mouse entered"); 
+            }
+        });
+
+        s.setOnMouseExited(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent me) {
+                System.out.println("Mouse exited");
+            }
+        });
+
+        s.setOnMousePressed(new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent me) {
+                System.out.println("Mouse pressed");
+                System.out.println("X : " + (int)me.getSceneX()/50 + " Y : " + (int)me.getSceneY()/50);
+            }
+        });
+        
+        
         stage.show();
         //System.exit(0);
     }
