@@ -5,6 +5,7 @@
  */
 package Vue;
 
+import Controlleur.Souris;
 import javafx.application.*;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -40,7 +41,7 @@ public class Interface extends Application{
         a.start();
         
         
-        s.setOnMouseEntered(new EventHandler<MouseEvent>() {
+        /*s.setOnMouseEntered(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent me) {
                 System.out.println("Mouse entered"); 
             }
@@ -50,14 +51,16 @@ public class Interface extends Application{
             public void handle(MouseEvent me) {
                 System.out.println("Mouse exited");
             }
-        });
+        });*/
 
-        s.setOnMousePressed(new EventHandler<MouseEvent>() {
+        /*s.setOnMousePressed(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent me) {
                 System.out.println("Mouse pressed");
                 System.out.println("X : " + (int)me.getSceneX()/50 + " Y : " + (int)me.getSceneY()/50);
             }
-        });
+        });*/
+        
+        s.setOnMousePressed(new Souris());
         
         
         stage.show();

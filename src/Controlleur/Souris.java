@@ -16,7 +16,9 @@ public class Souris implements EventHandler<MouseEvent>{
 
     @Override
     public void handle(MouseEvent t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("Mouse pressed");
+        System.out.println("X : " + (int)t.getSceneX()/50 + " Y : " + (int)t.getSceneY()/50);
+//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
