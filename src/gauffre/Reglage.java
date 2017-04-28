@@ -16,7 +16,7 @@ public class Reglage {
         prop = p;
     }
     
-    public static float lis(String nom) {
+    public static int lis(String nom) {
         String value = prop.getProperty(nom);
         if (value != null)
             return Integer.parseInt(value);

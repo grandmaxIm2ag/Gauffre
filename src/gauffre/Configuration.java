@@ -24,16 +24,15 @@ public class Configuration {
         try {
             p.load(in);
         } catch (IOException e) {
-            erreur(e, "Ressources/defaut.cfg");
+            erreur(e, "Ressources/Reglages/defaut.cfg");
         }
     }
 
     public static Properties proprietes() {
         Properties p;
-        InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream("Ressources/defaut.cfg");
+        InputStream in = Configuration.class.getClassLoader().getResourceAsStream("defaut.cfg");
         Properties defaut = new Properties();
         chargerProprietes(defaut, in);
-        p = defaut;
-        return p;
+        return defaut;
     }
 }

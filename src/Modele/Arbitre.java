@@ -4,7 +4,8 @@ import Joueurs.*;
 import Modele.Ensembles.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
+import gauffre.*;
 /**
  *
  * @author grandmax
@@ -17,6 +18,7 @@ public class Arbitre {
     public final static int J2 = 1;
     
     Plateau p;
+    Properties prop;
     Joueur joueurs[];
     int jCourant, type;
     Chargeur c;
@@ -24,7 +26,8 @@ public class Arbitre {
     LIFO<String> refaire;
     private Point h;
     
-    public Arbitre(){
+    public Arbitre(Properties prop){
+        this.prop = prop;
         joueurs = new Joueur[2];
         jCourant=0;
         c = new Chargeur();
@@ -36,17 +39,18 @@ public class Arbitre {
     public void init(int t){
         type = t;
         
-        c.init();
+        c.init(prop);
         p=c.charger();
         
+        System.out.println((p==null));
         switch(type){
             case JvJ:
-                joueurs[0] = new Humain(p.tailleInitiale()+1, 2, 5, 5, true, "Joueur1");
-                joueurs[1] = new Humain(p.tailleInitiale()+1, 10, 5, 5, false, "Joueur2");
+                joueurs[0] = new Humain(p.tailleInitiale()+1, Reglage.lis("yJoueur1"), 5, 5, true, "Joueur1");
+                joueurs[1] = new Humain(p.tailleInitiale()+1, Reglage.lis("yJoueur2"), 5, 5, false, "Joueur2");
                 break;
             case JvIA:
-                joueurs[0] = new Humain(p.tailleInitiale()+1, 2, 5, 5, true, "Joueur1");
-                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, 10, 5, 5, false);
+                joueurs[0] = new Humain(p.tailleInitiale()+1, Reglage.lis("yJoueur1"), 5, 5, true, "Joueur1");
+                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, Reglage.lis("yJoueur2"), 5, 5, false);
                 break;
             default:
                 break;
@@ -58,7 +62,7 @@ public class Arbitre {
     public void init(String plateau, int t){
         type = t;
         
-        c.init(plateau);
+        c.init(plateau, prop);
         p = c.charger();
         
         switch(type){
@@ -176,7 +180,7 @@ public class Arbitre {
     }
     
     public void nouvellePartie(){
-        c.init();
+        c.init(prop);
         p=c.charger();
         p.ajoutComposant(joueurs[0]);
         p.ajoutComposant(joueurs[1]);

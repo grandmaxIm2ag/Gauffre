@@ -6,6 +6,7 @@
 package TModele;
 
 import Modele.*;
+import gauffre.*;
 import java.util.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -15,8 +16,11 @@ import static org.junit.Assert.*;
  * @author grandmax
  */
 public class TComposant {
+    Properties prop;
     ComposantGraphique c;
     public TComposant() {
+        prop = Configuration.proprietes();
+        Reglage.init(prop);
         c = new ComposantGraphique(0,0,0,0) {
          
 
@@ -73,7 +77,7 @@ public class TComposant {
     }
     
     public void testPlateau(){
-        Plateau p = new Plateau(0,0,0,0,5,new Point(0,0));
+        Plateau p = new Plateau(0,0,0,0,5,new Point(0,0), prop);
         Case c = new Case(6,6,6,6);
         assertEquals(5, p.tailleInitiale());
         assertEquals(26, p.taille());
@@ -119,12 +123,12 @@ public class TComposant {
     
     public void testChargeur(){
         Chargeur c = new Chargeur();
-        c.init();
+        c.init(prop);
         Plateau p = c.charger();
         assertEquals(p.poison(), new Point(0,0));
         assertEquals(p.tailleInitiale(), 10);
         assertEquals(p.taille(), 101);
-        c.init("Ressources/Plateau/essaie1");
+        c.init("Ressources/Plateau/essaie1", prop);
         p = c.charger();
         assertEquals(p.poison(), new Point(1,2));
         assertEquals(p.tailleInitiale(), 10);

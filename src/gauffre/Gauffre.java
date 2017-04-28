@@ -10,6 +10,7 @@ import Modele.Arbitre;
 import Modele.Plateau;
 import Modele.Point;
 import Vue.Interface;
+import java.util.Properties;
 
 /**
  *
@@ -21,8 +22,12 @@ public class Gauffre {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
+        Properties p = Configuration.proprietes();
+        Reglage.init(p);
+        
         Interface it = new Interface();
-        it.creer(args, new Arbitre() );
+        it.creer(args, new Arbitre(p));
        // System.out.println(8/3);
     }
     

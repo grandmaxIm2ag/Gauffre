@@ -6,6 +6,7 @@
 package TModele;
 
 import Modele.*;
+import gauffre.*;
 import java.util.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -16,17 +17,19 @@ import static org.junit.Assert.*;
  */
 public class TArbitre {
     Arbitre a;
+    Properties prop;
     public TArbitre() {
-        a = new Arbitre();
+        prop = Configuration.proprietes();
+        a = new Arbitre(prop);
     }
     
     public void base(){
        a.init(Arbitre.JvJ);
        Chargeur c = new Chargeur();
-       c.init();
+       c.init(prop);
        assertTrue(a.plateau().equals(c.charger()));
        a.init("Ressources/Plateau/essaie1",Arbitre.JvJ);
-       c.init("Ressources/Plateau/essaie1");
+       c.init("Ressources/Plateau/essaie1", prop);
        assertTrue(a.plateau().equals(c.charger()));
     }
     
@@ -42,7 +45,7 @@ public class TArbitre {
     }
     
     public void simulation1(){
-        a = new Arbitre();
+        a = new Arbitre(prop);
         a.init(Arbitre.JvJ);
         a.joue(new Point(0,0));
         a.joue(new Point(4,3));

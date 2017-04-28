@@ -5,6 +5,7 @@
  */
 package Modele;
 
+import gauffre.Reglage;
 import java.util.*;
 
 /**
@@ -16,12 +17,13 @@ public class Plateau extends ComposantGraphique{
     Observable observable;
     Point poison;
     int tailleInitiale;
+    Properties prop;
 
-    public Plateau(int x, int y, int larg, int haut, int taille, Point p) {
+    public Plateau(int x, int y, int larg, int haut, int taille, Point p, Properties prop) {
         super(x, y, larg, haut);
         observable  = new Observable();
         composant = new LinkedList();
-        
+        this.prop = prop;
         poison = p;
         
         
@@ -30,11 +32,11 @@ public class Plateau extends ComposantGraphique{
         for(int i=0; i<taille; i++)
             for(int j=0; j<taille; j++)
                 if(poison.equals(new Point(i,j)))
-                    this.ajoutComposant(new Case(i,j,1,1,true));
+                    this.ajoutComposant(new Case(i,j,Reglage.lis("tailleCase"),Reglage.lis("tailleCase"),true));
                 else
-                    this.ajoutComposant(new Case(i,j,1,1));
+                    this.ajoutComposant(new Case(i,j,Reglage.lis("tailleCase"),Reglage.lis("tailleCase")));
         
-        this.ajoutComposant(new Poison(poison.x(), poison.y(), 1, 1));
+        this.ajoutComposant(new Poison(poison.x(), poison.y(), Reglage.lis("tailleCase"), Reglage.lis("tailleCase")));
     }
 
     public void ajoutObservateur(Observateur obs){
@@ -72,12 +74,7 @@ public class Plateau extends ComposantGraphique{
     }
     @Override
     public String toString(){
-        String str = tailleInitiale+"\n"+poison+"\n";
-        Iterator<ComposantGraphique> it = composant.iterator();
-        while (it.hasNext())
-            str = str + ":" + it.next();
-        
-        return str;
+        return tailleInitiale+"\n"+poison;
         
     }
     public Point poison(){
@@ -117,7 +114,7 @@ public class Plateau extends ComposantGraphique{
     public Plateau clone(){
         String pla = toString();
         String[] tmp = pla.split("\n");
-        Plateau nouv = new Plateau(p.x(), p.y(), l, h, Integer.parseInt(tmp[0]), new Point(tmp[1]));
+        Plateau nouv = new Plateau(p.x(), p.y(), l, h, Integer.parseInt(tmp[0]), new Point(tmp[1]), prop);
         
         for(int i=2; i<tmp.length; i++){
             String[] tmp2 = tmp[i].split(":");
