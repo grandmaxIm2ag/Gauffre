@@ -12,6 +12,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
 import Modele.Arbitre;
 import Controlleur.*;
+import Modele.Point;
 import javafx.event.*;
 import javafx.scene.input.*;
 
@@ -25,6 +26,7 @@ public class Interface extends Application{
     @Override
     public void start(Stage stage) throws Exception {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        final boolean fullScreen = false;
         stage.setTitle("Gauffre empoisonnee");
         Canvas c = new Canvas();
         BorderPane b = new BorderPane(c);
@@ -33,12 +35,18 @@ public class Interface extends Application{
         c.heightProperty().bind(b.heightProperty());
             
         Scene s;
-        s = new Scene(b, 800, 600);
+        if (fullScreen) {
+            s = new Scene(b);
+            stage.setFullScreen(true);            
+        } else {
+            s = new Scene(b, 800, 600);
+        }
         stage.setScene(s);
         Animation a = new Animation(arbitre, c);
+        arbitre.init(Arbitre.JvJ);
         a.start();
         
-        
+        s.setOnKeyPressed(new Touche(arbitre, 1));
         s.setOnMouseEntered(new EventHandler<MouseEvent>() {
             public void handle(MouseEvent me) {
                 System.out.println("Mouse entered"); 
@@ -55,6 +63,7 @@ public class Interface extends Application{
             public void handle(MouseEvent me) {
                 System.out.println("Mouse pressed");
                 System.out.println("X : " + (int)me.getSceneX()/50 + " Y : " + (int)me.getSceneY()/50);
+                arbitre.joue(new Point((int)me.getSceneX()/50,(int)me.getSceneY()/50 ));
             }
         });
         

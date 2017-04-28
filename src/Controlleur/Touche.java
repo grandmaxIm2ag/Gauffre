@@ -36,7 +36,7 @@ public class Touche implements EventHandler<KeyEvent>{
                 a.precedent();
                 break;
             case R:
-                //refaire
+                a.refaire();
                 break;
             case ESCAPE:
                 System.exit(0);

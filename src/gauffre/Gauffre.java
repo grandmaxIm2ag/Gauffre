@@ -30,6 +30,8 @@ public class Gauffre {
         m.convert();
         m.affiche();
         
+        Interface it = new Interface();
+        it.creer(args, new Arbitre() );
        // System.out.println(8/3);
     }
     
