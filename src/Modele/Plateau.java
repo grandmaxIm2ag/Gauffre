@@ -19,11 +19,13 @@ public class Plateau extends ComposantGraphique{
     Observable observable;
     Point poison;
     int tailleInitiale;
+    Point estPointe;
 
     public Plateau(int x, int y, int larg, int haut, int taille, Point p) {
         super(x, y, larg, haut);
         observable  = new Observable();
         composant = new LinkedList();
+        estPointe = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
         
         poison = p;
         this.ajoutComposant(new Poison(poison.x(), poison.y(), 1, 1));
@@ -76,13 +78,15 @@ public class Plateau extends ComposantGraphique{
     public void depointe() {
         Iterator<ComposantGraphique> it = composant.iterator();
         ComposantGraphique comp;
+        estPointe = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
         while (it.hasNext()) {
-            System.out.println("caca");
             comp =  it.next();
             if (comp instanceof Case) {
                 Case c = (Case) comp;
                 if (((Case)c).pointe())
                     ((Case)c).fixeProp(Case.POINTE, false);
+                if (((Case)c).aPointe())
+                    ((Case)c).fixeProp(Case.APRESPOINTE, false);
             }
         }
     }
@@ -93,8 +97,11 @@ public class Plateau extends ComposantGraphique{
             comp = it.next();
             if (comp instanceof Case) {
                 Case c = (Case) comp;
-                if (c.x() == p.x() && c.y() == p.y())
-                c.fixeProp(Case.POINTE, true);
+                if (c.x() == p.x() && c.y() == p.y()) {
+                    c.fixeProp(Case.POINTE, true);
+                    estPointe = new Point(p.x(), p.y());
+                } else if (c.apresPointe(estPointe))
+                    c.fixeProp(Case.APRESPOINTE, true);
             }
         }
         
