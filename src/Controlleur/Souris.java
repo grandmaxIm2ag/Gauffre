@@ -7,16 +7,25 @@ package Controlleur;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
+import Modele.*;
 
 /**
  *
  * @author grandmax
  */
 public class Souris implements EventHandler<MouseEvent>{
+    
+    Arbitre a;
+    int value;
+    
+        public Souris(Arbitre a, int v) {
+        this.a = a;
+        value = v;
+    }
 
     @Override
     public void handle(MouseEvent t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //a.joue(new Point((int)t.getX(),(int)t.getY()));
     }
     
 }

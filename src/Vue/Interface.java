@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
 import Modele.Arbitre;
+import Controlleur.*;
 
 /**
  *
@@ -34,8 +35,9 @@ public class Interface extends Application{
         stage.setScene(s);
             
             
-        //arbitre.init();
-        //arbitre.acceptenew DessinateurCanvasJavaFX(c));
+        arbitre.init();
+        c.setOnKeyPressed(new Touche(arbitre, 1));
+        c.setOnMousePressed(new Souris(arbitre, 1));
         stage.show();
     }
     
