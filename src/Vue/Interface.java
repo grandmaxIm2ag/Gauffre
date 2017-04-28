@@ -12,12 +12,17 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
 import Modele.Arbitre;
+import java.awt.Image;
+import java.io.File;
+import java.io.FileInputStream;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -39,7 +44,7 @@ public class Interface extends Application{
         Pane paneCenter= new Pane();
         Canvas c = new Canvas(600, 600);
         
-        paneCenter.getChildren().addAll(c);
+        paneCenter.getChildren().addAll( c);
         b.setCenter(paneCenter);
             
         c.widthProperty().bind(b.widthProperty());
@@ -48,6 +53,7 @@ public class Interface extends Application{
         VBox paneRight = new VBox();
         paneRight.setPrefSize(200, 600);
         paneRight.setPadding(new Insets(20));
+        paneRight.setSpacing(10);
         paneRight.setAlignment(Pos.TOP_CENTER);
         Button b1 = new Button("Truc"); 
         b1.setOnAction(new EventHandler<ActionEvent>() {
