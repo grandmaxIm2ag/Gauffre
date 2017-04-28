@@ -70,8 +70,15 @@ public class Plateau extends ComposantGraphique{
     public boolean estPoison(Point p){
         return poison.equals(p);
     }
+    @Override
     public String toString(){
-        return tailleInitiale+"\n"+poison;
+        //return tailleInitiale+"\n"+poison;
+        String str = "Plateau :\n";
+        Iterator<ComposantGraphique> it = composant.iterator();
+        while (it.hasNext())
+            str = str + " " + it.next();
+        return str;
+        
     }
     public Point poison(){
         return poison;
@@ -93,10 +100,10 @@ public class Plateau extends ComposantGraphique{
     @Override
     public boolean accept(Visiteur v) {
         boolean b = false;
-        
+        v.visite(this);
         Iterator<ComposantGraphique> it = composant.iterator();
         
-        while(it.hasNext()){
+        while(it.hasNext()){ 
             b |= it.next().accept(v);
         }
         

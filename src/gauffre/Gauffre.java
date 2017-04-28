@@ -6,6 +6,10 @@
 package gauffre;
 
 import Joueurs.Ordinateur;
+import Modele.Arbitre;
+import Modele.Plateau;
+import Modele.Point;
+import Vue.Interface;
 
 /**
  *
@@ -19,8 +23,13 @@ public class Gauffre {
     public static void main(String[] args) {
         // TODO code application logic here
         Ordinateur m = new Ordinateur(0,0,0,0,true,null,0);
+        Plateau p = new Plateau(10,10,10,10,10,new Point(0,0));
+        //Arbitre a = new Arbitre(p);
+        System.out.println(p);
+        //Interface.creer(args, a);
         m.convert();
         m.affiche();
+        
        // System.out.println(8/3);
     }
     

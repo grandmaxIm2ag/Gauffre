@@ -23,6 +23,7 @@ public class Animation extends AnimationTimer{
         arbitre = j;
         can = c;
         dessinateurs = new Visiteur[1];
+        dessinateurs[0] = new Dessinateur (c);
         courant = 0;
     }
     

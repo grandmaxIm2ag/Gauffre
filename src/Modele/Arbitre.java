@@ -68,6 +68,7 @@ public class Arbitre {
                 break;
         }
     }
+
     
     public Plateau plateau(){
         return p;
