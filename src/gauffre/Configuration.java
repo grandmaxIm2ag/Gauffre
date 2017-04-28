@@ -29,10 +29,15 @@ public class Configuration {
     }
 
     public static Properties proprietes() {
-        Properties p;
-        InputStream in = Configuration.class.getClassLoader().getResourceAsStream("defaut.cfg");
-        Properties defaut = new Properties();
-        chargerProprietes(defaut, in);
-        return defaut;
+        try{
+            Properties p;
+            InputStream in = new FileInputStream("Ressources/Reglages/defaut.cfg");
+            Properties defaut = new Properties();
+            chargerProprietes(defaut, in);
+            return defaut;
+        }catch(FileNotFoundException e){
+            System.out.println("coucou");
+            return null;
+        }
     }
 }

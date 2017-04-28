@@ -35,11 +35,21 @@ public class Dessinateur extends Visiteur{
     @Override
     public boolean visite(Case c){
         e.fixeComposant(c);
+        gc.setStroke(Color.BLACK);
         if(!c.detruit()){
-            gc.setStroke(Color.BLACK);
             if (c.empoisonnee())
-                gc.setFill(Color.BLUEVIOLET);
-            else
+                if (c.pointe())
+                    gc.setFill(Color.CHOCOLATE);
+                else
+                    gc.setFill(Color.BLUEVIOLET);
+            else if (c.pointe())
+                gc.setFill(Color.RED);
+            else if (c.aPointe())
+                gc.setFill(Color.PURPLE);
+            else if(c.aide()){
+                gc.setFill(Color.GREEN);
+            }
+            else   
                 gc.setFill(Color.BLUE);
             gc.fillRect(e.posX(), e.posY(), e.l(), e.h());
             gc.strokeRect(e.posX(), e.posY(), e.l(), e.h());

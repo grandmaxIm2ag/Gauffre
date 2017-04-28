@@ -54,7 +54,6 @@ public class Observable {
                 Case c = (Case) o;
                 tmp = c.location();
                 if(!tmp.equals(p) && tmp.x()>=p.x() && tmp.y()>=p.y()){
-                    System.out.println("detruit : "+tmp);
                     res += (":"+tmp);
                 }
             }

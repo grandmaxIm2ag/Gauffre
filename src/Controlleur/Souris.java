@@ -1,6 +1,7 @@
 package Controlleur;
 
 import Modele.*;
+import Vue.Interface;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
@@ -20,7 +21,17 @@ public class Souris implements EventHandler<MouseEvent>{
 
     @Override
     public void handle(MouseEvent me) {
-        a.joue(new Point((int)me.getSceneX()/50,(int)me.getSceneY()/50 ));
+        switch(value){
+            case Interface.SOURIS_BOUGEE:
+                a.depointe();
+                a.pointe(new Point((int)me.getSceneX()/50,(int)me.getSceneY()/50));
+            break;
+            case Interface.SOURIS_PRESSEE:
+                a.joue(new Point((int)me.getSceneX()/50,(int)me.getSceneY()/50 ));
+                break;
+            default:
+                break;
+        }
     }
     
 }

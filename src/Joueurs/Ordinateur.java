@@ -99,7 +99,7 @@ public class Ordinateur extends Joueur{
                 j++;
             }
         }    
-        Point p1 = new Point(i,j);
+        Point p1 = new Point(j,i);
         return p1;
     }
     
@@ -136,7 +136,7 @@ public class Ordinateur extends Joueur{
     public Point jouerIAFacile(){
         //mettre à jour cout du joueur (p)
         int indiceChoix;
-        indiceChoix = (r.nextInt()%(casesJouables.size()));    
+        indiceChoix = (r.nextInt(casesJouables.size()));    
         int choix = casesJouables.get(indiceChoix);
         coupIA(choix);
         Point p = convertToPoint(choix);

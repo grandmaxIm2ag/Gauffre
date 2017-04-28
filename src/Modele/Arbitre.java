@@ -25,7 +25,8 @@ public class Arbitre {
     LIFO<String> historique;
     LIFO<String> refaire;
     private Point h;
-    
+    boolean estAide = false;
+    int cpt = 0;
     public Arbitre(Properties prop){
         this.prop = prop;
         joueurs = new Joueur[2];
@@ -45,8 +46,8 @@ public class Arbitre {
         System.out.println((p==null));
         switch(type){
             case JvJ:
-                joueurs[0] = new Humain(p.tailleInitiale()+1, Reglage.lis("yJoueur1"), 5, 5, true, "Joueur1");
-                joueurs[1] = new Humain(p.tailleInitiale()+1, Reglage.lis("yJoueur2"), 5, 5, false, "Joueur2");
+                joueurs[0] = new Humain(Reglage.lis("xJoueur1"),p.tailleInitiale()+1,  5, 5, true, "Joueur1");
+                joueurs[1] = new Humain(Reglage.lis("xJoueur2"),p.tailleInitiale()+1,  5, 5, false, "Joueur2");
                 break;
             case JvIA:
                 joueurs[0] = new Humain(p.tailleInitiale()+1, Reglage.lis("yJoueur1"), 5, 5, true, "Joueur1");
@@ -118,29 +119,41 @@ public class Arbitre {
             nouvellePartie();
         }
         
+        if(estAide){
+            p.accept(new Visiteur(){
+               public boolean visite(Case c){
+                   if(c.aide()){
+                       c.fixeProp(Case.DETRUIT, false);
+                   }
+                   return false;
+               }  
+            });
+            estAide = false;
+        }
         prochainJoueur();
     }
     
     public void help(){
-        
+        estAide = true;
         Ordinateur aide = new Ordinateur(p.tailleInitiale()+1, 0, 5, 5, true,Ordinateur.FACILE);
         
-        //h = aide.go(this.p.clone());
+        h = aide.joue(this);
         
         p.accept(new Visiteur(){
            public boolean visite(Case c){
-               c.location().equals(h);
+               
+               if(c.location().equals(h))
                c.fixeProp(c.AIDE, true);
                return false;
            } 
         });
-        
+        System.out.println(cpt);
+        cpt = 0;
     }
     
     public void precedent(){
         if(!historique.estVide()){
             String coup = historique.extraire();
-            System.out.println(coup);
             refaire.inserer(coup);
             String[] cases = coup.split(":");
             for(int i=0; i<cases.length; i++){
@@ -244,5 +257,11 @@ public class Arbitre {
     }
     public int courant(){
         return jCourant;
+    }
+    public void depointe(){
+        p.depointe();
+    }
+    public void pointe(Point point){
+        p.pointe(point);
     }
 }

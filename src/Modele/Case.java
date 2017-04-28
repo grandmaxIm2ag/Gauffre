@@ -10,12 +10,14 @@ package Modele;
  * @author grandmax
  */
 public class Case extends ComposantGraphique implements Observateur{
-    public final static int NB = 3;
+    public final static int NB = 5;
     
     public static final int EMPOISONNEE = 0;
     public final static int DETRUIT = 1;
-    public final static int AIDE = 2;
-    
+    public final static int POINTE = 2;
+    public final static int APRESPOINTE = 3;
+    public final static int AIDE = 4;
+        
     boolean propriete[] = new boolean[NB];
     
     public Case(int x, int y, int larg, int haut) {
@@ -33,6 +35,21 @@ public class Case extends ComposantGraphique implements Observateur{
     }
     public boolean detruit(){
         return propriete[DETRUIT];
+    }
+    
+    public boolean pointe() {
+        return propriete[POINTE];
+    }
+    
+    public boolean aide(){
+        return propriete[AIDE];
+    }
+    public boolean aPointe() {
+        return propriete[APRESPOINTE];
+    }
+    
+    public boolean apresPointe (Point p) {
+        return (p.x() <= this.x() && p.y() <= this.y());
     }
     
     public void fixeProp(int x, boolean b){

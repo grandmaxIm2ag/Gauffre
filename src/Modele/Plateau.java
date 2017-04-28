@@ -5,8 +5,10 @@
  */
 package Modele;
 
-import gauffre.Reglage;
 import java.util.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 
 /**
  *
@@ -17,13 +19,14 @@ public class Plateau extends ComposantGraphique{
     Observable observable;
     Point poison;
     int tailleInitiale;
+    Point estPointe;
     Properties prop;
-
     public Plateau(int x, int y, int larg, int haut, int taille, Point p, Properties prop) {
         super(x, y, larg, haut);
         observable  = new Observable();
         composant = new LinkedList();
-        this.prop = prop;
+        estPointe = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        
         poison = p;
         
         
@@ -32,11 +35,12 @@ public class Plateau extends ComposantGraphique{
         for(int i=0; i<taille; i++)
             for(int j=0; j<taille; j++)
                 if(poison.equals(new Point(i,j)))
-                    this.ajoutComposant(new Case(i,j,Reglage.lis("tailleCase"),Reglage.lis("tailleCase"),true));
+                    this.ajoutComposant(new Case(i,j,1,1,true));
                 else
-                    this.ajoutComposant(new Case(i,j,Reglage.lis("tailleCase"),Reglage.lis("tailleCase")));
+                    this.ajoutComposant(new Case(i,j,1,1));
         
-        this.ajoutComposant(new Poison(poison.x(), poison.y(), Reglage.lis("tailleCase"), Reglage.lis("tailleCase")));
+        this.prop = prop;
+        this.ajoutComposant(new Poison(poison.x(), poison.y(), 1, 1));
     }
 
     public void ajoutObservateur(Observateur obs){
@@ -71,6 +75,37 @@ public class Plateau extends ComposantGraphique{
     }
     public boolean estPoison(Point p){
         return poison.equals(p);
+    }
+    public void depointe() {
+        Iterator<ComposantGraphique> it = composant.iterator();
+        ComposantGraphique comp;
+        estPointe = new Point(Integer.MAX_VALUE, Integer.MAX_VALUE);
+        while (it.hasNext()) {
+            comp =  it.next();
+            if (comp instanceof Case) {
+                Case c = (Case) comp;
+                if (((Case)c).pointe())
+                    ((Case)c).fixeProp(Case.POINTE, false);
+                if (((Case)c).aPointe())
+                    ((Case)c).fixeProp(Case.APRESPOINTE, false);
+            }
+        }
+    }
+    public void pointe(Point p) {
+        Iterator<ComposantGraphique> it = composant.iterator();
+        ComposantGraphique comp;
+        while (it.hasNext()) {
+            comp = it.next();
+            if (comp instanceof Case) {
+                Case c = (Case) comp;
+                if (c.x() == p.x() && c.y() == p.y()) {
+                    c.fixeProp(Case.POINTE, true);
+                    estPointe = new Point(p.x(), p.y());
+                } else if (c.apresPointe(estPointe))
+                    c.fixeProp(Case.APRESPOINTE, true);
+            }
+        }
+        
     }
     @Override
     public String toString(){
