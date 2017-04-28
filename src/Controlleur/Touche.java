@@ -38,6 +38,9 @@ public class Touche implements EventHandler<KeyEvent>{
             case R:
                 a.refaire();
                 break;
+            case S:
+                a.sauvegarde();
+                break;
             case ESCAPE:
                 System.exit(0);
                 break;

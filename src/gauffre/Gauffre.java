@@ -21,15 +21,6 @@ public class Gauffre {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        Ordinateur m = new Ordinateur(0,0,0,0,true,null,0);
-        Plateau p = new Plateau(10,10,10,10,10,new Point(0,0));
-        //Arbitre a = new Arbitre(p);
-        System.out.println(p);
-        //Interface.creer(args, a);
-        m.convert();
-        m.affiche();
-        
         Interface it = new Interface();
         it.creer(args, new Arbitre() );
        // System.out.println(8/3);

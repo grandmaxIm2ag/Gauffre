@@ -39,6 +39,24 @@ public class Ordinateur extends Joueur{
         difficulte = dif;
         casesJouables= new LinkedList<>();
         //initialisation des cases//rempli g
+        
+        r= new Random(GRAINE);
+    }
+
+    public Point joue(Arbitre a){
+        this.p = p;
+        this.a = a;
+        
+        /*
+        p.accept(new Visiteur(){
+            public boolean visite(Case c){
+                
+                
+                
+                return false;
+            }
+        });*/
+        
         mat = new int [nbLignes][nbColonnes];
         for(int i=0;i<nbLignes;i=i+1){
             for(int j=0;j<nbColonnes;j=j+1){
@@ -46,12 +64,6 @@ public class Ordinateur extends Joueur{
                 casesJouables.add(g);
             }
         }
-        r= new Random(GRAINE);
-    }
-
-    public Point joue(Plateau p, Arbitre a){
-        this.p = p;
-        this.a = a;
         switch (this.difficulte){
             case FACILE:
                 return jouerIAFacile();

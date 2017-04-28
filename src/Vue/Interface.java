@@ -59,13 +59,7 @@ public class Interface extends Application{
             }
         });
 
-        s.setOnMousePressed(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent me) {
-                System.out.println("Mouse pressed");
-                System.out.println("X : " + (int)me.getSceneX()/50 + " Y : " + (int)me.getSceneY()/50);
-                arbitre.joue(new Point((int)me.getSceneX()/50,(int)me.getSceneY()/50 ));
-            }
-        });
+        s.setOnMousePressed(new Souris(arbitre, 1));
         
         
         stage.show();

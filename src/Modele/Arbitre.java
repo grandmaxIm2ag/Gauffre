@@ -45,8 +45,8 @@ public class Arbitre {
                 joueurs[1] = new Humain(p.tailleInitiale()+1, 10, 5, 5, false, "Joueur2");
                 break;
             case JvIA:
-                joueurs[0] = new Humain(p.tailleInitiale()+1, 0, 5, 5, true, "Joueur1");
-                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, 0, 5, 5, true);
+                joueurs[0] = new Humain(p.tailleInitiale()+1, 2, 5, 5, true, "Joueur1");
+                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, 10, 5, 5, false);
                 break;
             default:
                 break;
@@ -67,8 +67,8 @@ public class Arbitre {
                 joueurs[1] = new Humain(p.tailleInitiale()+1, 10, 5, 5, false, "Joueur2");
                 break;
             case JvIA:
-                joueurs[0] = new Humain(p.tailleInitiale()+1, 0, 5, 5, true, "Joueur1");
-                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, 0, 5, 5, true);
+                joueurs[0] = new Humain(p.tailleInitiale()+1, 2, 5, 5, true, "Joueur1");
+                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, 10, 5, 5, false);
                 break;
             default:
                 break;
@@ -119,7 +119,7 @@ public class Arbitre {
     
     public void help(){
         
-        Ordinateur aide = new Ordinateur(p.tailleInitiale()+1, 0, 5, 5, true, p, Ordinateur.FACILE);
+        Ordinateur aide = new Ordinateur(p.tailleInitiale()+1, 0, 5, 5, true,Ordinateur.FACILE);
         
         //h = aide.go(this.p.clone());
         
@@ -231,7 +231,7 @@ public class Arbitre {
         
         if(joueurs[jCourant] instanceof Ordinateur){
             Ordinateur o = (Ordinateur) joueurs[jCourant];
-            //p=joue(o.go(this.p.clone()));
+            joue(o.joue(this));
         }
         
     }
