@@ -87,7 +87,11 @@ public class Plateau extends ComposantGraphique{
     }
     @Override
     public boolean equals(Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       if(o instanceof Plateau){
+           Plateau n = (Plateau) o;
+           return toString().equals(n.toString());
+       }
+       return true;
     }
  
     @Override
@@ -101,6 +105,22 @@ public class Plateau extends ComposantGraphique{
         }
         
         return b;
+    }
+    
+    public Plateau clone(){
+        String pla = toString();
+        String[] tmp = pla.split("\n");
+        Plateau nouv = new Plateau(p.x(), p.y(), l, h, Integer.parseInt(tmp[0]), new Point(tmp[1]));
+        
+        for(int i=2; i<tmp.length; i++){
+            String[] tmp2 = tmp[i].split(":");
+            for(int j=0; j<tmp2.length; j++){
+                Point tmp3 = new Point(tmp2[j]);
+                nouv.supprimeComposant(new Case(tmp3.x(), tmp3.y(),1,1 ));
+            }
+        }
+        
+        return nouv;
     }
 
 }

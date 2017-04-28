@@ -21,7 +21,7 @@ public abstract class Joueur extends ComposantGraphique{
         main = m;
     }
 
-    public void upScrore(){
+    public void upScore(){
         score++;
     }
     public int getScore(){

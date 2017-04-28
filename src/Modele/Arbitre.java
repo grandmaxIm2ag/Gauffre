@@ -1,12 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modele;
 
 import Joueurs.*;
 import Modele.Ensembles.*;
+import java.io.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 /**
  *
  * @author grandmax
@@ -23,17 +21,21 @@ public class Arbitre {
     int jCourant, type;
     Chargeur c;
     LIFO<String> historique;
+    LIFO<String> refaire;
+    private Point h;
     
-    public Arbitre(int t){
+    public Arbitre(){
         joueurs = new Joueur[2];
         jCourant=0;
         c = new Chargeur();
         historique = new LIFO();
-        type = t;
+        refaire = new LIFO();
         
     }
     
-    public void init(){
+    public void init(int t){
+        type = t;
+        
         c.init();
         p=c.charger();
         
@@ -51,7 +53,9 @@ public class Arbitre {
                 
         }
     }
-    public void init(String plateau){
+    public void init(String plateau, int t){
+        type = t;
+        
         c.init(plateau);
         p = c.charger();
         
@@ -69,29 +73,72 @@ public class Arbitre {
         }
     }
     
+    
     public Plateau plateau(){
         return p;
     }
     
-    public Plateau joue(float x, float y){
-        int px = (int)x;
-        int py = (int)y;
-        Point tmp = new Point(px, py);
+    public void joue(Point coup){
+        historique.inserer(p.observable().historique(coup));
+        p.maj(coup);
         
-        historique.inserer(p.observable().historique(tmp));
+        p.accept(new Visiteur(){
+           public boolean visite(Case c){
+               c.location().equals(h);
+               c.fixeProp(c.AIDE, false);
+               return false;
+           } 
+        });
         
-        p.maj(tmp);
+        while(!refaire.estVide())
+            refaire.extraire();
         
-        return p;
+        if(p.estPoison(coup)){
+            if(jCourant==0)
+                jCourant = 1;
+            else
+                jCourant=0;
+            
+            joueurs[jCourant].upScore();
+            
+            nouvellePartie();
+        }
+        
+        prochainJoueur();
     }
     
     public void help(){
         
+        Ordinateur aide = new Ordinateur(p.tailleInitiale()+1, 0, 5, 5, true, p, Ordinateur.FACILE);
+        
+        //h = aide.go(this.p.clone());
+        
+        p.accept(new Visiteur(){
+           public boolean visite(Case c){
+               c.location().equals(h);
+               c.fixeProp(c.AIDE, true);
+               return false;
+           } 
+        });
+        
     }
     
     public void precedent(){
-        if(!historique.estVide()){    
-            String[] cases = historique.extraire().split(":");
+        if(!historique.estVide()){
+            String coup = historique.extraire();
+            refaire.inserer(coup);
+            String[] cases = coup.split(":");
+            for(int i=0; i<cases.length; i++){
+                Point tmp = new Point(cases[i]);
+                p.ajoutComposant(new Case(tmp.x(), tmp.y(), 1, 1));
+            }
+        } 
+    }
+    public void refaire(){
+        if(!refaire.estVide()){
+            String coup = refaire.extraire();
+            historique.inserer(coup);
+            String[] cases = coup.split(":");
             for(int i=0; i<cases.length; i++){
                 Point tmp = new Point(cases[i]);
                 p.ajoutComposant(new Case(tmp.x(), tmp.y(), 1, 1));
@@ -100,10 +147,60 @@ public class Arbitre {
     }
     
     public void nouvellePartie(){
-        init();
+        c.init();
+        p=c.charger();
+        while(!historique.estVide())
+            historique.extraire();
+        while(!refaire.estVide())
+            refaire.extraire();
     }
     
     public void sauvegarde(){
+        String res = p.toString();
+        while(!historique.estVide())
+            res += ("\n"+historique.extraire());
+        SimpleDateFormat d = new SimpleDateFormat ("dd/MM/yyyy" );
+        SimpleDateFormat h = new SimpleDateFormat ("hh:mm");
+ 
+        Date currentTime_1 = new Date();
+ 
+        String dateString = d.format(currentTime_1);
+        String heureString = h.format(currentTime_1);
         
+        String fichier = "sauv_"+dateString+"_"+heureString;
+        
+        try{
+            BufferedWriter fw = new BufferedWriter(new FileWriter(fichier));
+            fw.write(res);
+            fw.close();
+        }catch(IOException e){
+            System.err.println("Echec de la saucegarde");
+        }
+        
+    }
+    public LIFO<String> historique(){
+        return historique;
+    }
+    public LIFO<String> arefaire(){
+        return refaire;
+    } 
+    public void prochainJoueur(){
+        joueurs[jCourant].setMain();
+        if(jCourant==0)
+            jCourant = 1;
+        else
+            jCourant=0;
+        
+        if(joueurs[jCourant] instanceof Ordinateur){
+            Ordinateur o = (Ordinateur) joueurs[jCourant];
+            //p=joue(o.go(this.p.clone()));
+        }
+        joueurs[jCourant].setMain();
+    }
+    public int score(int j){
+        return joueurs[j].getScore();
+    }
+    public int courant(){
+        return jCourant;
     }
 }

@@ -113,6 +113,8 @@ public class TComposant {
             }
         }
         assertTrue(b);
+        assertTrue(p.equals(p));
+        assertTrue(p.equals(p.clone()));
     }
     
     public void testChargeur(){
