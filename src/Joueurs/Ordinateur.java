@@ -91,10 +91,14 @@ public class Ordinateur extends Joueur{
         return p1;
     }
     
-    public int testconfig(){
+    public int convertToVal(Point m){
+        return (int)(Math.pow(2,m.y()) * Math.pow(3,m.x()));
+    }
+    
+    public int testconfig(int nbcoups){
         int vc=1,vl=1;
         
-        if(casesJouables.size() == 1 && casesJouables.get(0) == 1) return -1000;
+        if(casesJouables.size() == 1 && casesJouables.get(0) == 1) return -1000 + nbcoups;
         for(int i=1;i<casesJouables.size();i++){
             if(Math.log(casesJouables.get(i))/Math.log(2) % 1 != 0)
                 vl=0;
@@ -102,8 +106,8 @@ public class Ordinateur extends Joueur{
                 vc=0;
             
         }
-        if(vc == 1) return 1003;
-        if(vl == 1) return 1002;
+        if(vc == 1) return 1000 - nbcoups;
+        if(vl == 1) return 1000 - nbcoups; 
         return 0;
     }
     public void coupIA(int val){
@@ -154,11 +158,11 @@ public class Ordinateur extends Joueur{
     public Point jouerIADiff(int profondeur){
         int max_poids = -10000;
         int meilleur_coup = 1;
-        
+        int hauteur = profondeur;
         for(int i = 1; i < casesJouables.size();i++){
             LinkedList<Integer> casestmp = (LinkedList<Integer>) casesJouables.clone();
             coupIA(casesJouables.get(i));
-            int tmp = Min(profondeur -1);
+            int tmp = Min(profondeur -1, hauteur);
             if(tmp > max_poids){
                 max_poids = tmp;
                 meilleur_coup = i;
@@ -168,15 +172,15 @@ public class Ordinateur extends Joueur{
         return convertToPoint(casesJouables.get(meilleur_coup));
     }
     
-    public int Max(int profondeur){
+    public int Max(int profondeur,int hauteur){
         if(profondeur == 0)
-            return testconfig();
+            return testconfig(hauteur - profondeur);
         int max_poids = -100000;
         
         for(int i=1;i<casesJouables.size();i++){
             LinkedList<Integer> casestmp = (LinkedList<Integer>) casesJouables.clone();
             coupIA(casesJouables.get(i));
-            int tmp = Min(profondeur-1);
+            int tmp = Min(profondeur-1, hauteur);
             if(tmp > max_poids){
                 max_poids = tmp;
             }
@@ -185,15 +189,15 @@ public class Ordinateur extends Joueur{
         return max_poids;
     }
     
-    public int Min(int profondeur){
+    public int Min(int profondeur,int hauteur){
         if(profondeur == 0)
-            return testconfig();
+            return testconfig(hauteur - profondeur);
         int min_poids = 100000;
         
         for(int i=1;i<casesJouables.size();i++){
             LinkedList<Integer> casestmp = (LinkedList<Integer>) casesJouables.clone();
             coupIA(casesJouables.get(i));
-            int tmp = Max(profondeur-1);
+            int tmp = Max(profondeur-1, hauteur);
             if(tmp < min_poids){
                 min_poids = tmp;
             }

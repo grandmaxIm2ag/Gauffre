@@ -23,9 +23,8 @@ public class Gauffre {
         m.coupIA(2);
         m.coupIA(3);
         m.affiche();
-    /*    m.coupIA(12);
-        m.affiche();*/
-        System.out.println(m.testconfig());
+        m.coupIA(12);
+        m.affiche();
     }
     
 }
