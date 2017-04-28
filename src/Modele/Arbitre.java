@@ -44,7 +44,7 @@ public class Arbitre {
                 break;
             case JvIA:
                 joueurs[0] = new Humain(p.tailleInitiale()+1, 0, 5, 5, true, "Joueur1");
-                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, 0, 5, 5, true, p);
+                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, 0, 5, 5, true);
                 break;
             default:
                 break;
@@ -62,7 +62,7 @@ public class Arbitre {
                 break;
             case JvIA:
                 joueurs[0] = new Humain(p.tailleInitiale()+1, 0, 5, 5, true, "Joueur1");
-                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, 0, 5, 5, true, p);
+                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, 0, 5, 5, true);
                 break;
             default:
                 break;

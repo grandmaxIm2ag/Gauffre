@@ -18,10 +18,14 @@ public class Gauffre {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        Ordinateur m = new Ordinateur(0,0,0,0,true,null,0);
-        m.convert();
+        Ordinateur m = new Ordinateur(0,0,0,0,true);
         m.affiche();
-       // System.out.println(8/3);
+        m.coupIA(2);
+        m.coupIA(3);
+        m.affiche();
+    /*    m.coupIA(12);
+        m.affiche();*/
+        System.out.println(m.testconfig());
     }
     
 }
