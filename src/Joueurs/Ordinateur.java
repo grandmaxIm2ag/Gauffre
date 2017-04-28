@@ -6,6 +6,7 @@
 package Joueurs;
 
 import Modele.*;
+import static java.lang.Thread.sleep;
 import java.util.*;
 import java.util.Random;
 
@@ -31,11 +32,12 @@ public class Ordinateur extends Joueur{
     
     public Ordinateur(int x, int y, int larg, int haut, boolean main) {
         this(x,y,larg, haut, main, FACILE);
+        this.nom = "Ordinateur";
     }
     public Ordinateur(int x, int y, int larg, int haut, boolean main, int dif) {
         super(x, y, larg, haut, main);
-        this.nbColonnes=4;//attention! pour g 0<=a<nbcolonnes//mettre à jour avec plateau lorsque disponible//NEEDTOUPDATE
-        this.nbLignes=4;//attention! pour g 0<=b<nblignes//mettre à jour avec plateau lorsque disponible//NEEDTOUPDATE
+        this.nbColonnes=10;//attention! pour g 0<=a<nbcolonnes//mettre à jour avec plateau lorsque disponible//NEEDTOUPDATE
+        this.nbLignes=10;//attention! pour g 0<=b<nblignes//mettre à jour avec plateau lorsque disponible//NEEDTOUPDATE
         difficulte = dif;
         casesJouables= new LinkedList<>();
         //initialisation des cases//rempli g
@@ -43,35 +45,32 @@ public class Ordinateur extends Joueur{
         r= new Random(GRAINE);
     }
 
-    public Point joue(Arbitre a){
-        this.p = p;
+    public Point joue(Arbitre a) {
+        
+        this.p = a.plateau();
         this.a = a;
         
-        /*
+        nbColonnes=p.tailleInitiale();
+        nbLignes=p.tailleInitiale();
+        mat = new int[nbColonnes][nbColonnes];
         p.accept(new Visiteur(){
+            @Override
             public boolean visite(Case c){
-                
-                
-                
+                if(!c.detruit())
+                casesJouables.add(convertToVal(c.location()));            
                 return false;
             }
-        });*/
-        
-        mat = new int [nbLignes][nbColonnes];
-        for(int i=0;i<nbLignes;i=i+1){
-            for(int j=0;j<nbColonnes;j=j+1){
-                int g= (int)(Math.pow(2,j) * Math.pow(3,i));
-                casesJouables.add(g);
-            }
-        }
+        });
+        convertToMat();
+        affiche();
         switch (this.difficulte){
             case FACILE:
                 return jouerIAFacile();
             case NORMAL:
                 return jouerIANormal();
             case DIFFICILE:
-                return jouerIADiff(5);//valeur arbitraire:profondeur minmax
-                
+                return jouerIADiff(2);
+          
         }
         return null;
     }
@@ -99,34 +98,34 @@ public class Ordinateur extends Joueur{
                 j++;
             }
         }    
-        Point p1 = new Point(i,j);
+        Point p1 = new Point(j,i);
         return p1;
     }
     
     public int convertToVal(Point m){
-        return (int)(Math.pow(2,m.y()) * Math.pow(3,m.x()));
+        return (int)(Math.pow(2,m.x()) * Math.pow(3,m.y()));
     }
     
     public int testconfig(int nbcoups){
         int vc=1,vl=1;
         
-        if(casesJouables.size() == 1 && casesJouables.get(0) == 1) return -1000 + nbcoups;
+        if(casesJouables.size() == 1 && casesJouables.get(0) == 1) return nbcoups-1000;
         for(int i=1;i<casesJouables.size();i++){
             if(Math.log(casesJouables.get(i))/Math.log(2) % 1 != 0)
                 vl=0;
             if(Math.log(casesJouables.get(i))/Math.log(3) % 1 != 0)
-                vc=0;
-            
+                vc=0;      
         }
         if(vc == 1) return 1000 - nbcoups;
         if(vl == 1) return 1000 - nbcoups; 
         return 0;
     }
+    
     public void coupIA(int val){
         for(int k=0;k<casesJouables.size(); k++){
             if(casesJouables.get(k) % val == 0){
                 Point o = convertToPoint(casesJouables.get(k));
-                mat[o.x()][o.y()] = 1;
+               // mat[o.x()][o.y()] = 1;
                 casesJouables.remove(k);
                 k--;
             }   
@@ -134,13 +133,13 @@ public class Ordinateur extends Joueur{
     }
     
     public Point jouerIAFacile(){
-        //mettre à jour cout du joueur (p)
         int indiceChoix;
-        indiceChoix = (r.nextInt()%(casesJouables.size()));    
+        System.out.print(casesJouables.size());
+        indiceChoix = (r.nextInt(casesJouables.size()));    
         int choix = casesJouables.get(indiceChoix);
         coupIA(choix);
-        Point p = convertToPoint(choix);
-        return p;
+        Point res = convertToPoint(choix);
+        return res;
     }
     
     public void convertToMat(){  
@@ -157,7 +156,6 @@ public class Ordinateur extends Joueur{
                     j++;
                 }
             }    
-           // System.out.println(i+" , "+j);
             mat[i][j] = casesJouables.get(k);
         }
     }
@@ -178,9 +176,12 @@ public class Ordinateur extends Joueur{
             if(tmp > max_poids){
                 max_poids = tmp;
                 meilleur_coup = i;
+                
             }
             casesJouables = casestmp;
         }
+      //  System.out.println(casesJouables.get(meilleur_coup));
+       // System.out.println(convertToPoint(casesJouables.get(meilleur_coup)));
         return convertToPoint(casesJouables.get(meilleur_coup));
     }
     

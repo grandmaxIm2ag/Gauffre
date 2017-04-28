@@ -3,6 +3,7 @@ package Modele;
 import Joueurs.*;
 import Modele.Ensembles.*;
 import java.io.*;
+import static java.lang.Thread.sleep;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 /**
@@ -46,7 +47,7 @@ public class Arbitre {
                 break;
             case JvIA:
                 joueurs[0] = new Humain(p.tailleInitiale()+1, 2, 5, 5, true, "Joueur1");
-                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, 10, 5, 5, false);
+                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, 10, 5, 5, false,Ordinateur.DIFFICILE);
                 break;
             default:
                 break;
@@ -68,7 +69,7 @@ public class Arbitre {
                 break;
             case JvIA:
                 joueurs[0] = new Humain(p.tailleInitiale()+1, 2, 5, 5, true, "Joueur1");
-                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, 10, 5, 5, false);
+                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, 10, 5, 5, false, Ordinateur.DIFFICILE);
                 break;
             default:
                 break;
@@ -136,7 +137,6 @@ public class Arbitre {
     public void precedent(){
         if(!historique.estVide()){
             String coup = historique.extraire();
-            System.out.println(coup);
             refaire.inserer(coup);
             String[] cases = coup.split(":");
             for(int i=0; i<cases.length; i++){
@@ -233,7 +233,6 @@ public class Arbitre {
             Ordinateur o = (Ordinateur) joueurs[jCourant];
             joue(o.joue(this));
         }
-        
     }
     public int score(int j){
         return joueurs[j].getScore();

@@ -43,7 +43,7 @@ public class Interface extends Application{
         }
         stage.setScene(s);
         Animation a = new Animation(arbitre, c);
-        arbitre.init(Arbitre.JvJ);
+        arbitre.init(Arbitre.JvIA);
         a.start();
         
         s.setOnKeyPressed(new Touche(arbitre, 1));
