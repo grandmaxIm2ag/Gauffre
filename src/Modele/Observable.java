@@ -27,7 +27,10 @@ public class Observable {
         boolean b = false;
         Iterator<Observateur> it = observateurs.iterator();
         while(it.hasNext()){
-            b |= it.next().maj(p);
+            boolean bb = it.next().maj(p);
+            if(bb)
+                it.remove();
+            b |= bb;
         }
         return b;
     }
@@ -48,9 +51,10 @@ public class Observable {
         while(it.hasNext()){
             Observateur o = it.next();
             if(o instanceof Case){
-                Case c = (Case) it.next();
+                Case c = (Case) o;
                 tmp = c.location();
-                if(!tmp.equals(p) && tmp.x()>=p.x() && tmp.y()>=p.y() && !c.detruit()){
+                if(!tmp.equals(p) && tmp.x()>=p.x() && tmp.y()>=p.y()){
+                    System.out.println("detruit : "+tmp);
                     res += (":"+tmp);
                 }
             }

@@ -63,11 +63,11 @@ public class Dessinateur extends Visiteur{
     @Override
     public boolean visite(Joueur j){
         e.fixeComposant(j);
-        String s= j.getNom()+":"+Integer.toString(j.getScore());
+        String s= j.getNom()+" : "+Integer.toString(j.getScore());
         /*Text t = new Text(e.posX(),e.posY(),s );
         t.setFont(f);
         Bounds b = t.getBoundsInLocal();*/
-        Font f= new Font(10);
+        Font f= new Font(20);
         if(j.getMain()){
             gc.setStroke(Color.RED);
         }else{
@@ -75,7 +75,7 @@ public class Dessinateur extends Visiteur{
         }
         gc.save();
         gc.setFont(f);
-        gc.strokeText(s, j.location().x(),j.location().y());
+        gc.strokeText(s, e.posX(),e.posY());
         gc.restore();
 
         return false;
@@ -98,4 +98,3 @@ public class Dessinateur extends Visiteur{
         return false;
     }
 }
-

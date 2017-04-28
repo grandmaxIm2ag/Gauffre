@@ -41,17 +41,19 @@ public class Arbitre {
         
         switch(type){
             case JvJ:
-                joueurs[0] = new Humain(p.tailleInitiale()+1, 0, 5, 5, true, "Joueur1");
-                joueurs[1] = new Humain(p.tailleInitiale()+1, 0, 5, 5, true, "Joueur2");
+                joueurs[0] = new Humain(p.tailleInitiale()+1, 2, 5, 5, true, "Joueur1");
+                joueurs[1] = new Humain(p.tailleInitiale()+1, 10, 5, 5, false, "Joueur2");
                 break;
             case JvIA:
-                joueurs[0] = new Humain(p.tailleInitiale()+1, 0, 5, 5, true, "Joueur1");
-                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, 0, 5, 5, true, p);
+                joueurs[0] = new Humain(p.tailleInitiale()+1, 2, 5, 5, true, "Joueur1");
+                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, 10, 5, 5, false, p);
                 break;
             default:
                 break;
                 
         }
+        p.ajoutComposant(joueurs[0]);
+        p.ajoutComposant(joueurs[1]);
     }
     public void init(String plateau, int t){
         type = t;
@@ -61,16 +63,18 @@ public class Arbitre {
         
         switch(type){
             case JvJ:
-                joueurs[0] = new Humain(p.tailleInitiale()+1, 0, 5, 5, true, "Joueur1");
-                joueurs[1] = new Humain(p.tailleInitiale()+1, 0, 5, 5, true, "Joueur2");
+                joueurs[0] = new Humain(p.tailleInitiale()+1, 2, 5, 5, true, "Joueur1");
+                joueurs[1] = new Humain(p.tailleInitiale()+1, 10, 5, 5, false, "Joueur2");
                 break;
             case JvIA:
-                joueurs[0] = new Humain(p.tailleInitiale()+1, 0, 5, 5, true, "Joueur1");
-                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, 0, 5, 5, true, p);
+                joueurs[0] = new Humain(p.tailleInitiale()+1, 2, 5, 5, true, "Joueur1");
+                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, 10, 5, 5, false, p);
                 break;
             default:
                 break;
         }
+        p.ajoutComposant(joueurs[0]);
+        p.ajoutComposant(joueurs[1]);
     }
 
     
@@ -102,6 +106,11 @@ public class Arbitre {
             
             joueurs[jCourant].upScore();
             
+            if(jCourant==0)
+                jCourant = 1;
+            else
+                jCourant=0;
+            
             nouvellePartie();
         }
         
@@ -127,11 +136,22 @@ public class Arbitre {
     public void precedent(){
         if(!historique.estVide()){
             String coup = historique.extraire();
+            System.out.println(coup);
             refaire.inserer(coup);
             String[] cases = coup.split(":");
             for(int i=0; i<cases.length; i++){
                 Point tmp = new Point(cases[i]);
-                p.ajoutComposant(new Case(tmp.x(), tmp.y(), 1, 1));
+                System.out.println(tmp);
+                p.accept(new Visiteur(){
+                   public boolean visite(Case c){
+                       if(c.location().equals(tmp)){
+                           c.fixeProp(Case.DETRUIT, false);
+                           p.ajoutObservateur(c);
+                       }
+                           
+                       return false;
+                   } 
+                });
             }
         } 
     }
@@ -142,7 +162,15 @@ public class Arbitre {
             String[] cases = coup.split(":");
             for(int i=0; i<cases.length; i++){
                 Point tmp = new Point(cases[i]);
-                p.ajoutComposant(new Case(tmp.x(), tmp.y(), 1, 1));
+                p.accept(new Visiteur(){
+                   public boolean visite(Case c){
+                       if(c.location().equals(tmp)){
+                           c.fixeProp(Case.DETRUIT, true);
+                           p.supprimeObservateur(c);
+                       }
+                       return false;
+                   } 
+                });
             }
         } 
     }
@@ -150,6 +178,8 @@ public class Arbitre {
     public void nouvellePartie(){
         c.init();
         p=c.charger();
+        p.ajoutComposant(joueurs[0]);
+        p.ajoutComposant(joueurs[1]);
         while(!historique.estVide())
             historique.extraire();
         while(!refaire.estVide())
@@ -160,20 +190,24 @@ public class Arbitre {
         String res = p.toString();
         while(!historique.estVide())
             res += ("\n"+historique.extraire());
-        SimpleDateFormat d = new SimpleDateFormat ("dd/MM/yyyy" );
-        SimpleDateFormat h = new SimpleDateFormat ("hh:mm");
+        
+        SimpleDateFormat d = new SimpleDateFormat ("dd_MM_yyyy" );
+        SimpleDateFormat h = new SimpleDateFormat ("hh-mm");
  
         Date currentTime_1 = new Date();
  
         String dateString = d.format(currentTime_1);
         String heureString = h.format(currentTime_1);
         
-        String fichier = "sauv_"+dateString+"_"+heureString;
+        String fichier = "Ressources/Plateau/sauv_"+dateString+"_"+heureString+".txt";
         
         try{
-            BufferedWriter fw = new BufferedWriter(new FileWriter(fichier));
-            fw.write(res);
-            fw.close();
+            PrintWriter writer = new PrintWriter(fichier, "UTF-8");
+            writer.print(res);
+            writer.close();
+            System.out.println("Fichier de sauvegarde "+fichier+" créer");
+        }catch(FileNotFoundException e){
+            System.err.println(fichier+" n'existe pas");
         }catch(IOException e){
             System.err.println("Echec de la saucegarde");
         }
@@ -187,16 +221,19 @@ public class Arbitre {
     } 
     public void prochainJoueur(){
         joueurs[jCourant].setMain();
+        
         if(jCourant==0)
             jCourant = 1;
         else
             jCourant=0;
         
+        joueurs[jCourant].setMain();
+        
         if(joueurs[jCourant] instanceof Ordinateur){
             Ordinateur o = (Ordinateur) joueurs[jCourant];
             //p=joue(o.go(this.p.clone()));
         }
-        joueurs[jCourant].setMain();
+        
     }
     public int score(int j){
         return joueurs[j].getScore();

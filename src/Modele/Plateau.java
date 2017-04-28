@@ -23,7 +23,7 @@ public class Plateau extends ComposantGraphique{
         composant = new LinkedList();
         
         poison = p;
-        this.ajoutComposant(new Poison(poison.x(), poison.y(), 1, 1));
+        
         
       
         tailleInitiale = taille;
@@ -34,7 +34,7 @@ public class Plateau extends ComposantGraphique{
                 else
                     this.ajoutComposant(new Case(i,j,1,1));
         
-        
+        this.ajoutComposant(new Poison(poison.x(), poison.y(), 1, 1));
     }
 
     public void ajoutObservateur(Observateur obs){
@@ -72,11 +72,11 @@ public class Plateau extends ComposantGraphique{
     }
     @Override
     public String toString(){
-        //return tailleInitiale+"\n"+poison;
-        String str = "Plateau :\n";
+        String str = tailleInitiale+"\n"+poison+"\n";
         Iterator<ComposantGraphique> it = composant.iterator();
         while (it.hasNext())
-            str = str + " " + it.next();
+            str = str + ":" + it.next();
+        
         return str;
         
     }
