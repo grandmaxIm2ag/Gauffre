@@ -85,6 +85,7 @@ public class Arbitre {
     }
     
     public void joue(Point coup){
+        
         historique.inserer(p.observable().historique(coup));
         p.maj(coup);
         
@@ -111,7 +112,8 @@ public class Arbitre {
                 jCourant = 1;
             else
                 jCourant=0;
-            
+            try{sleep(3000);}
+            catch(InterruptedException e){};
             nouvellePartie();
         }
         
