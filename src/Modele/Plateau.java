@@ -73,6 +73,32 @@ public class Plateau extends ComposantGraphique{
     public boolean estPoison(Point p){
         return poison.equals(p);
     }
+    public void depointe() {
+        Iterator<ComposantGraphique> it = composant.iterator();
+        ComposantGraphique comp;
+        while (it.hasNext()) {
+            System.out.println("caca");
+            comp =  it.next();
+            if (comp instanceof Case) {
+                Case c = (Case) comp;
+                if (((Case)c).pointe())
+                    ((Case)c).fixeProp(Case.POINTE, false);
+            }
+        }
+    }
+    public void pointe(Point p) {
+        Iterator<ComposantGraphique> it = composant.iterator();
+        ComposantGraphique comp;
+        while (it.hasNext()) {
+            comp = it.next();
+            if (comp instanceof Case) {
+                Case c = (Case) comp;
+                if (c.x() == p.x() && c.y() == p.y())
+                c.fixeProp(Case.POINTE, true);
+            }
+        }
+        
+    }
     @Override
     public String toString(){
         //return tailleInitiale+"\n"+poison;

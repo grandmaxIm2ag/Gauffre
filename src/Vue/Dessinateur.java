@@ -37,9 +37,15 @@ public class Dessinateur extends Visiteur{
         e.fixeComposant(c);
         gc.setStroke(Color.BLACK);
         if (c.empoisonnee())
-            gc.setFill(Color.BLUEVIOLET);
-        else
-            gc.setFill(Color.BLUE);
+            if (c.pointe())
+                gc.setFill(Color.CHOCOLATE);
+            else
+                gc.setFill(Color.BLUEVIOLET);
+        else 
+            if (c.pointe())
+                gc.setFill(Color.RED);
+            else
+                gc.setFill(Color.BLUE);
         gc.fillRect(e.posX(), e.posY(), e.l(), e.h());
         gc.strokeRect(e.posX(), e.posY(), e.l(), e.h());
         return false;

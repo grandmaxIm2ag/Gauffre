@@ -81,8 +81,8 @@ public class Interface extends Application{
         Animation a = new Animation(arbitre, c);
         a.start();
         
-        s.setOnMousePressed(new Souris());
-        
+        s.setOnMousePressed(new Souris(true));
+        s.setOnMouseMoved(new Souris(false, arbitre.plateau()));
         
         
         stage.show();
