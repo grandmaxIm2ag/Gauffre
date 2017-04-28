@@ -8,6 +8,9 @@ package Vue;
 import javafx.animation.*;
 import javafx.scene.canvas.Canvas;
 import Modele.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 /**
  *
  * @author grandmax

@@ -12,10 +12,16 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
 import Modele.Arbitre;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 /**
  *
@@ -28,11 +34,31 @@ public class Interface extends Application{
     public void start(Stage stage) throws Exception {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         stage.setTitle("Gauffre empoisonnee");
-        Canvas c = new Canvas();
-        BorderPane b = new BorderPane(c);
+        BorderPane b = new BorderPane();
+        
+        Pane paneCenter= new Pane();
+        Canvas c = new Canvas(600, 600);
+        
+        paneCenter.getChildren().addAll(c);
+        b.setCenter(paneCenter);
             
         c.widthProperty().bind(b.widthProperty());
         c.heightProperty().bind(b.heightProperty());
+        
+        VBox paneRight = new VBox();
+        paneRight.setPrefSize(200, 600);
+        paneRight.setPadding(new Insets(20));
+        paneRight.setAlignment(Pos.TOP_CENTER);
+        Button b1 = new Button("Truc"); 
+        b1.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Faire un truc !");
+            }
+        });
+        paneRight.getChildren().add(b1);
+        b.setRight(paneRight);
             
         Scene s;
         s = new Scene(b, 800, 600);
@@ -40,27 +66,8 @@ public class Interface extends Application{
         Animation a = new Animation(arbitre, c);
         a.start();
         
-        
-        /*s.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent me) {
-                System.out.println("Mouse entered"); 
-            }
-        });
-
-        s.setOnMouseExited(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent me) {
-                System.out.println("Mouse exited");
-            }
-        });*/
-
-        /*s.setOnMousePressed(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent me) {
-                System.out.println("Mouse pressed");
-                System.out.println("X : " + (int)me.getSceneX()/50 + " Y : " + (int)me.getSceneY()/50);
-            }
-        });*/
-        
         s.setOnMousePressed(new Souris());
+        
         
         
         stage.show();
