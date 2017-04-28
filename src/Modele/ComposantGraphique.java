@@ -41,8 +41,16 @@ public abstract class ComposantGraphique {
         return p;
     }
     
+    public String toString() {
+        return p.toString();
+    }
+    
+    public boolean accept (Visiteur v) {
+        return v.visite(this);
+    }
+    
     public abstract boolean equals(Object o);
     
-    public abstract boolean accept(Visiteur v);
+    //public abstract boolean accept(Visiteur v);
     
 }

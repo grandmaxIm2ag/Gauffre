@@ -12,6 +12,10 @@ package Modele;
 public class Arbitre {
     Plateau p;
     
+    public Arbitre (Plateau p) {
+        this.p = p;
+    }
+    
     
     public Plateau plateau(){
         return p;

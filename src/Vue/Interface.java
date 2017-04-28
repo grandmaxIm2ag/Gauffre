@@ -36,7 +36,10 @@ public class Interface extends Application{
             
         //arbitre.init();
         //arbitre.acceptenew DessinateurCanvasJavaFX(c));
+        Animation a = new Animation(arbitre, c);
+        a.start();
         stage.show();
+        //System.exit(0);
     }
     
         public static void creer(String[] args, Arbitre a) {
