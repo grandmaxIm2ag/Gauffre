@@ -29,10 +29,10 @@ public class Ordinateur extends Joueur{
     int [][] mat;
     Random r;
     
-    public Ordinateur(int x, int y, int larg, int haut, boolean main) {
+    public Ordinateur(double x, double y, int larg, int haut, boolean main) {
         this(x,y,larg, haut, main, FACILE);
     }
-    public Ordinateur(int x, int y, int larg, int haut, boolean main, int dif) {
+    public Ordinateur(double x, double y, int larg, int haut, boolean main, int dif) {
         super(x, y, larg, haut, main);
         this.nbColonnes=4;//attention! pour g 0<=a<nbcolonnes//mettre à jour avec plateau lorsque disponible//NEEDTOUPDATE
         this.nbLignes=4;//attention! pour g 0<=b<nblignes//mettre à jour avec plateau lorsque disponible//NEEDTOUPDATE
@@ -126,7 +126,7 @@ public class Ordinateur extends Joueur{
         for(int k=0;k<casesJouables.size(); k++){
             if(casesJouables.get(k) % val == 0){
                 Point o = convertToPoint(casesJouables.get(k));
-                mat[o.x()][o.y()] = 1;
+                mat[(int)o.x()][(int)o.y()] = 1;
                 casesJouables.remove(k);
                 k--;
             }   

@@ -12,7 +12,7 @@ package Modele;
 public class Message extends ComposantGraphique{
     String message;
     
-    public Message(int x, int y, int larg, int haut, String m) {
+    public Message(float x, float y, int larg, int haut, String m) {
         super(x, y, larg, haut);
         message = m;
     }

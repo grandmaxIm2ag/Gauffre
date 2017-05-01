@@ -11,6 +11,7 @@ import Modele.Plateau;
 import Modele.Point;
 import Vue.Interface;
 import java.util.Properties;
+import java.util.Scanner;
 
 /**
  *
@@ -25,10 +26,11 @@ public class Gauffre {
         
         Properties p = Configuration.proprietes();
         Reglage.init(p);
+        Arbitre a = new Arbitre(p);
         
         Interface it = new Interface();
-        it.creer(args, new Arbitre(p));
-       // System.out.println(8/3);
+        it.creer(args,a);
+        a.go();
     }
     
 }

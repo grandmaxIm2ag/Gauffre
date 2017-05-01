@@ -16,7 +16,7 @@ public abstract class ComposantGraphique {
     int l;
     int h;
     
-    public ComposantGraphique(int x, int y, int larg, int haut){
+    public ComposantGraphique(double x, double y, int larg, int haut){
         p = new Point(x,y);
         l = larg;
         h = haut;
@@ -31,10 +31,10 @@ public abstract class ComposantGraphique {
     public int l(){
         return l;
     }
-    public int x(){
+    public double x(){
         return p.x();
     }
-    public int y(){
+    public double y(){
         return p.y();
     }
     public Point location(){

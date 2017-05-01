@@ -20,10 +20,10 @@ public class Case extends ComposantGraphique implements Observateur{
         
     boolean propriete[] = new boolean[NB];
     
-    public Case(int x, int y, int larg, int haut) {
+    public Case(double x, double y, int larg, int haut) {
         this(x, y, larg, haut, false);
     }
-    public Case(int x, int y, int larg, int haut, boolean b) {
+    public Case(double x, double y, int larg, int haut, boolean b) {
         super(x, y, larg, haut);
         fixeProp(EMPOISONNEE,b);
         fixeProp(DETRUIT, false);
@@ -49,7 +49,7 @@ public class Case extends ComposantGraphique implements Observateur{
     }
     
     public boolean apresPointe (Point p) {
-        return (p.x() <= this.x() && p.y() <= this.y());
+        return collision(p);
     }
     
     public void fixeProp(int x, boolean b){
@@ -62,7 +62,7 @@ public class Case extends ComposantGraphique implements Observateur{
 
     @Override
     public boolean maj(Point p) {
-        if(p.x()<=this.p.x() && p.y()<=this.p.y())
+        if(pointe() || aPointe())
             return ((propriete[DETRUIT] = true));
         return false;
     }
@@ -74,6 +74,19 @@ public class Case extends ComposantGraphique implements Observateur{
             return (p.equals(c.location()) && l==c.l() && h==c.h() && this.empoisonnee()==c.empoisonnee() );
         }
         return false;
+    }
+    
+    public boolean collision(Point coup){
+        if(coup.x()<=p.x() && coup.y()<=p.y()){
+            return true;
+        }else{
+            double diffX = coup.x()-p.x();
+            double diffY = coup.y()-p.y();
+            if(diffX<l && diffY<h)
+                return true;
+            else
+                return false;
+        }
     }
     
 }

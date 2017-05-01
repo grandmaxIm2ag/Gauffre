@@ -15,7 +15,7 @@ public abstract class Joueur extends ComposantGraphique{
     String nom;
     boolean main;
     
-    public Joueur(int x, int y, int larg, int haut, boolean m) {
+    public Joueur(double x, double y, int larg, int haut, boolean m) {
         super(x, y, larg, haut);
         score = 0;
         main = m;

@@ -10,16 +10,16 @@ package Modele;
  * @author grandmax
  */
 public class Point {
-    int x, y;
+    double x, y;
     
-    public Point(int x, int y){
+    public Point(double x, double y){
         this.x = x;
         this.y = y;
     }
     public Point(String m){
         String tmp[] = m.split(",");
-        int x = Integer.parseInt(tmp[0].substring(1));
-        int y = Integer.parseInt(tmp[1].substring(0, tmp[1].length()-1));
+        int x = (int)Double.parseDouble(tmp[0].substring(1));
+        int y = (int)Double.parseDouble(tmp[1].substring(0, tmp[1].length()-1));
         this.x = x;
         this.y = y;
     }
@@ -28,10 +28,10 @@ public class Point {
         this.x = x; this.y = y;
     }
     
-    public int x(){
+    public double x(){
         return x;
     }
-    public int y(){
+    public double y(){
         return y;
     }
     

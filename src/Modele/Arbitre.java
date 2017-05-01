@@ -2,6 +2,7 @@ package Modele;
 
 import Joueurs.*;
 import Modele.Ensembles.*;
+import Vue.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -11,7 +12,7 @@ import gauffre.*;
  * @author grandmax
  */
 public class Arbitre {
-    
+
     public final static int JvJ = 0;
     public final static int JvIA = 1;
     public final static int J1 = 0;
@@ -20,13 +21,19 @@ public class Arbitre {
     Plateau p;
     Properties prop;
     Joueur joueurs[];
-    int jCourant, type;
+    int jCourant, type, difficulte;
+    String plateau;
     Chargeur c;
     LIFO<String> historique;
     LIFO<String> refaire;
     private Point h;
     boolean estAide = false;
     int cpt = 0;
+    
+    String[] diff;
+    String[] types;
+    String[] plateaux;
+    
     public Arbitre(Properties prop){
         this.prop = prop;
         joueurs = new Joueur[2];
@@ -35,90 +42,95 @@ public class Arbitre {
         historique = new LIFO();
         refaire = new LIFO();
         
-    }
-    
-    public void init(int t){
-        type = t;
+        diff = new String[3];
+        diff[Ordinateur.FACILE] = "Facile";
+        diff[Ordinateur.NORMAL] = "Normal";
+        diff[Ordinateur.DIFFICILE] = "Difficile";
+        
+        types = new String[2];
+        types[JvJ] = "Joueur vs Joueur";
+        types[JvIA] = "Joueur vs IA";
+        
+        try{
+          BufferedReader fr = new BufferedReader(new FileReader("Ressources/Plateau/Sauvegarde"));
+          String str = fr.readLine();
+          if(str == null || str.equals("")){
+              plateaux = new String[1];
+              plateaux[0] = "(none)";
+          }else{
+              plateaux = str.split(":");
+          }
+        }catch(IOException e){
+            System.out.println("Initialisation plateaux : "+e);
+            plateaux = new String[1];
+            plateaux[1] = "(none)";
+        }
         
         c.init(prop);
-        p=c.charger();
-        
-        System.out.println((p==null));
-        switch(type){
-            case JvJ:
-                joueurs[0] = new Humain(Reglage.lis("xJoueur1"),p.tailleInitiale()+1,  5, 5, true, "Joueur1");
-                joueurs[1] = new Humain(Reglage.lis("xJoueur2"),p.tailleInitiale()+1,  5, 5, false, "Joueur2");
-                break;
-            case JvIA:
-                joueurs[0] = new Humain(p.tailleInitiale()+1, Reglage.lis("yJoueur1"), 5, 5, true, "Joueur1");
-                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, Reglage.lis("yJoueur2"), 5, 5, false);
-                break;
-            default:
-                break;
-                
-        }
-        p.ajoutComposant(joueurs[0]);
-        p.ajoutComposant(joueurs[1]);
-    }
-    public void init(String plateau, int t){
-        type = t;
-        
-        c.init(plateau, prop);
-        p = c.charger();
-        
-        switch(type){
-            case JvJ:
-                joueurs[0] = new Humain(p.tailleInitiale()+1, 2, 5, 5, true, "Joueur1");
-                joueurs[1] = new Humain(p.tailleInitiale()+1, 10, 5, 5, false, "Joueur2");
-                break;
-            case JvIA:
-                joueurs[0] = new Humain(p.tailleInitiale()+1, 2, 5, 5, true, "Joueur1");
-                joueurs[1] = new Ordinateur(p.tailleInitiale()+1, 10, 5, 5, false);
-                break;
-            default:
-                break;
-        }
-        p.ajoutComposant(joueurs[0]);
-        p.ajoutComposant(joueurs[1]);
+        type = JvJ;
+        difficulte = Ordinateur.NORMAL;
     }
 
-    
-    
+    public void init(){
+
+        switch(type){
+            case JvJ:
+                joueurs[J1] = new Humain((double)p.tailleInitiale()+0.5,(double)p.tailleInitiale()/3 ,  Reglage.lis("lJoueur"), Reglage.lis("hJoueur"), true, "Joueur1");
+                joueurs[J2] = new Humain((double)p.tailleInitiale()+0.5,(double)p.tailleInitiale()*2/3,  Reglage.lis("lJoueur"), Reglage.lis("hJoueur"), false, "Joueur2");
+                break;
+            case JvIA:
+                joueurs[J1] = new Humain((double)Reglage.lis("xJoueur1"),(double)Reglage.lis("yJoueur1"),  Reglage.lis("lJoueur"), Reglage.lis("hJoueur"), true, "Joueur1");
+                joueurs[J2] = new Ordinateur((double)Reglage.lis("xJoueur2"),(double)Reglage.lis("yJoueur2"),  Reglage.lis("lJoueur"), Reglage.lis("hJoueur"), false, difficulte);
+                break;
+            default:
+                break;
+        }
+        
+        p.ajoutComposant(joueurs[J1]);
+        p.ajoutComposant(joueurs[J2]);
+    }
+
     public Plateau plateau(){
         return p;
     }
-    
+
     public void joue(Point coup){
         historique.inserer(p.observable().historique(coup));
         p.maj(coup);
-        
+
         p.accept(new Visiteur(){
            public boolean visite(Case c){
                c.location().equals(h);
                c.fixeProp(c.AIDE, false);
                return false;
-           } 
+           }
         });
-        
+
         while(!refaire.estVide())
             refaire.extraire();
-        
+
         if(p.estPoison(coup)){
             if(jCourant==0)
                 jCourant = 1;
             else
                 jCourant=0;
-            
+
             joueurs[jCourant].upScore();
+
+            if(joueurs[jCourant].getScore()==Reglage.lis("nbManche")){
+               // p.vider();
+               // p.ajoutComposant(new Message(0,0,p.l(), p.h(),"Joueur "+jCourant+" à gagner"));
+               Interface.goFin(joueurs[jCourant].getNom());
+            }else{
+                if(jCourant==0)
+                    jCourant = 1;
+                else
+                    jCourant=0;
             
-            if(jCourant==0)
-                jCourant = 1;
-            else
-                jCourant=0;
-            
-            nouvellePartie();
+                 nouvellePlateau();
+            }
         }
-        
+
         if(estAide){
             p.accept(new Visiteur(){
                public boolean visite(Case c){
@@ -126,31 +138,31 @@ public class Arbitre {
                        c.fixeProp(Case.DETRUIT, false);
                    }
                    return false;
-               }  
+               }
             });
             estAide = false;
         }
         prochainJoueur();
     }
-    
+
     public void help(){
         estAide = true;
-        Ordinateur aide = new Ordinateur(p.tailleInitiale()+1, 0, 5, 5, true,Ordinateur.FACILE);
-        
+        Ordinateur aide = new Ordinateur(p.tailleInitiale()+0.5, 0, 5, 5, true,Ordinateur.FACILE);
+
         h = aide.joue(this);
-        
+
         p.accept(new Visiteur(){
            public boolean visite(Case c){
-               
+
                if(c.location().equals(h))
                c.fixeProp(c.AIDE, true);
                return false;
-           } 
+           }
         });
         System.out.println(cpt);
         cpt = 0;
     }
-    
+
     public void precedent(){
         if(!historique.estVide()){
             String coup = historique.extraire();
@@ -165,12 +177,12 @@ public class Arbitre {
                            c.fixeProp(Case.DETRUIT, false);
                            p.ajoutObservateur(c);
                        }
-                           
+
                        return false;
-                   } 
+                   }
                 });
             }
-        } 
+        }
     }
     public void refaire(){
         if(!refaire.estVide()){
@@ -186,13 +198,35 @@ public class Arbitre {
                            p.supprimeObservateur(c);
                        }
                        return false;
-                   } 
+                   }
                 });
             }
-        } 
+        }
     }
-    
+
     public void nouvellePartie(){
+        p=c.charger();
+        init();
+        while(!historique.estVide())
+            historique.extraire();
+        while(!refaire.estVide())
+            refaire.extraire();
+        Interface.goPartie();
+    }
+    public void chargerPartie(){
+        if(plateau!=null && !plateau.equals("(none)")){
+            System.out.println("Ca passe");
+            c.init(plateau,prop);
+            p=c.charger();
+            init();
+            while(!historique.estVide())
+                historique.extraire();
+            while(!refaire.estVide())
+                refaire.extraire();
+            Interface.goPartie();
+        }
+    }
+    public void nouvellePlateau(){
         c.init(prop);
         p=c.charger();
         p.ajoutComposant(joueurs[0]);
@@ -202,22 +236,24 @@ public class Arbitre {
         while(!refaire.estVide())
             refaire.extraire();
     }
-    
+
     public void sauvegarde(){
         String res = p.toString();
+        String str="";
         while(!historique.estVide())
             res += ("\n"+historique.extraire());
-        
+
         SimpleDateFormat d = new SimpleDateFormat ("dd_MM_yyyy" );
         SimpleDateFormat h = new SimpleDateFormat ("hh-mm");
- 
+
         Date currentTime_1 = new Date();
- 
+
         String dateString = d.format(currentTime_1);
         String heureString = h.format(currentTime_1);
+
+        String fichier = "Ressources/Plateau/sauv_"+dateString+"_"+heureString;
         
-        String fichier = "Ressources/Plateau/sauv_"+dateString+"_"+heureString+".txt";
-        
+
         try{
             PrintWriter writer = new PrintWriter(fichier, "UTF-8");
             writer.print(res);
@@ -229,28 +265,50 @@ public class Arbitre {
             System.err.println("Echec de la saucegarde");
         }
         
+        try{
+          BufferedReader fr = new BufferedReader(new FileReader("Ressources/Plateau/Sauvegarde"));
+          str = fr.readLine();
+          
+          if(str == null || str.equals("")){
+              str = fichier+fichier.split("/")[2];
+          }else{
+              str += (":"+fichier.split("/")[2]);
+          }
+          System.out.println(str);
+        }catch(IOException e){
+            System.err.println("Echec de la sauvegarde "+fichier);
+        }
+        
+        try{
+            PrintWriter writer = new PrintWriter("Ressources/Plateau/Sauvegarde", "UTF-8");
+            writer.print(str);
+            writer.close();
+        }catch(IOException e){
+            System.err.println("Echec de la saucegarde "+e);
+        }
+
     }
     public LIFO<String> historique(){
         return historique;
     }
     public LIFO<String> arefaire(){
         return refaire;
-    } 
+    }
     public void prochainJoueur(){
         joueurs[jCourant].setMain();
-        
+
         if(jCourant==0)
             jCourant = 1;
         else
             jCourant=0;
-        
+
         joueurs[jCourant].setMain();
-        
+
         if(joueurs[jCourant] instanceof Ordinateur){
             Ordinateur o = (Ordinateur) joueurs[jCourant];
             joue(o.joue(this));
         }
-        
+
     }
     public int score(int j){
         return joueurs[j].getScore();
@@ -263,5 +321,61 @@ public class Arbitre {
     }
     public void pointe(Point point){
         p.pointe(point);
+    }
+
+    public boolean accept(Visiteur v){
+        return p.accept(v);
+    }
+
+    public void sourisCoup(double curseurX, double curseurY, double canX, double canY){
+        Etendeur e = new Etendeur();
+        e.fixeEchelle(p.l()/canX, p.l()/canX);
+        joue(e.souris(curseurX, curseurY));
+    }
+    public void sourisPointe(double curseurX, double curseurY, double canX, double canY){
+        Etendeur e = new Etendeur();
+        e.fixeEchelle(p.l()/canX, p.h()/canY);
+        p.pointe(e.souris(curseurX, curseurY));
+    }
+    public void go(){
+        Interface.goMenu();
+    }
+    
+    public void setInit(int c,int i){
+        switch(c){
+            case Interface.CHOIX_MODE:
+                type=i;
+                break;
+            case Interface.CHOIX_DIFFICULTE:
+                difficulte=i;
+                break;
+            case Interface.CHOIX_PLATEAU:
+                charger(i);
+                break;
+            default:
+                break;
+        }
+    }
+    
+    public void charger(int i){
+        if(i<plateaux.length){
+            if(!plateaux[i].equals("(none)")){
+                plateau = "Ressources/Plateau/"+plateaux[i];
+                
+            }
+        }
+    }
+    
+    public String[] tabInit(int c){
+        switch(c){
+            case Interface.CHOIX_MODE:
+                return types;
+            case Interface.CHOIX_DIFFICULTE:
+                return diff;
+            case Interface.CHOIX_PLATEAU:
+                return plateaux;
+            default:
+                return null;
+        }
     }
 }

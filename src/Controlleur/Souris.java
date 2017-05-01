@@ -3,6 +3,7 @@ package Controlleur;
 import Modele.*;
 import Vue.Interface;
 import javafx.event.EventHandler;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseEvent;
 
 /**
@@ -13,10 +14,12 @@ public class Souris implements EventHandler<MouseEvent>{
     
     Arbitre a;
     int value;
+    Canvas c;
     
-    public Souris(Arbitre a, int v) {
+    public Souris(Arbitre a, int v, Canvas can) {
         this.a = a;
         value = v;
+        c = can;
     }
 
     @Override
@@ -24,10 +27,10 @@ public class Souris implements EventHandler<MouseEvent>{
         switch(value){
             case Interface.SOURIS_BOUGEE:
                 a.depointe();
-                a.pointe(new Point((int)me.getSceneX()/50,(int)me.getSceneY()/50));
+                a.sourisPointe(me.getX(), me.getY(), c.getWidth(), c.getHeight());
             break;
             case Interface.SOURIS_PRESSEE:
-                a.joue(new Point((int)me.getSceneX()/50,(int)me.getSceneY()/50 ));
+                a.sourisCoup(me.getX(), me.getY(), c.getWidth(),  c.getHeight());
                 break;
             default:
                 break;

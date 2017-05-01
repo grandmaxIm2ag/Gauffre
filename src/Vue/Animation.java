@@ -15,15 +15,17 @@ import Modele.*;
 public class Animation extends AnimationTimer{
 
     Arbitre arbitre;
-    Canvas can;
+    Canvas[] can;
     Visiteur[] dessinateurs;
     int courant;
     
-    Animation(Arbitre j, Canvas c) {
+    Animation(Arbitre j, Canvas[] c) {
         arbitre = j;
         can = c;
-        dessinateurs = new Visiteur[1];
-        dessinateurs[0] = new Dessinateur (c);
+        dessinateurs = new Visiteur[c.length];
+        for(int i=0;i<c.length;i++){
+            dessinateurs[i] = new Dessinateur(c[i]);
+        }
         courant = 0;
     }
     
@@ -38,7 +40,7 @@ public class Animation extends AnimationTimer{
     @Override
     public void handle(long l) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        arbitre.plateau().accept(dessinateurs[courant]);
+        arbitre.accept(dessinateurs[courant]);
     }
     
     

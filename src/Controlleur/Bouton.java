@@ -37,6 +37,18 @@ public class Bouton implements EventHandler<ActionEvent>{
             case Interface.BOUTTON_SAUVEGARDER:
                 ab.sauvegarde();
                 break;
+            case Interface.BOUTON_AIDE:
+                ab.help();
+                break;
+            case Interface.BOUTON_CHARGER:
+                ab.chargerPartie();
+                break;
+            case Interface.BOUTON_MENU:
+                Interface.goMenu();
+                break;
+            case Interface.BOUTON_QUITTER:
+                System.exit(0);
+                break;
             default:
                 break;
         }

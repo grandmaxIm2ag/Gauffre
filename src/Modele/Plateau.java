@@ -21,7 +21,7 @@ public class Plateau extends ComposantGraphique{
     int tailleInitiale;
     Point estPointe;
     Properties prop;
-    public Plateau(int x, int y, int larg, int haut, int taille, Point p, Properties prop) {
+    public Plateau(double x, double y, int larg, int haut, int taille, Point p, Properties prop) {
         super(x, y, larg, haut);
         observable  = new Observable();
         composant = new LinkedList();
@@ -135,8 +135,8 @@ public class Plateau extends ComposantGraphique{
  
     @Override
     public boolean accept(Visiteur v) {
-        boolean b = false;
-        v.visite(this);
+        boolean b = v.visite(this);
+        
         Iterator<ComposantGraphique> it = composant.iterator();
         
         while(it.hasNext()){ 
@@ -160,6 +160,10 @@ public class Plateau extends ComposantGraphique{
         }
         
         return nouv;
+    }
+    
+    public void vider(){
+        this.composant.clear();
     }
 
 }

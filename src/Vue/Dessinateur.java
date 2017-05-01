@@ -28,7 +28,6 @@ public class Dessinateur extends Visiteur{
     public Dessinateur(Canvas c) {
         this.c=c;
         e = new Etendeur();
-        e.fixeEchelle(50, 50);
         gc = c.getGraphicsContext2D();
     }
         
@@ -65,11 +64,13 @@ public class Dessinateur extends Visiteur{
     }
     @Override
     public boolean visite(Plateau p){
+        e.fixeEchelle( c.getWidth() / p.l(),  c.getHeight() / p.h());
         gc.clearRect(0, 0, c.getWidth(), c.getHeight());
-        gc.setStroke(Color.BLACK);
-        gc.strokeRect(0, 0, c.getWidth(), c.getHeight());
+        //gc.setStroke(Color.BLACK);
+        //gc.strokeRect(0, 0, c.getWidth(), c.getHeight());
         return false;
     }
+    
     @Override
     public boolean visite(Joueur j){
         e.fixeComposant(j);

@@ -11,7 +11,7 @@ package Modele;
  */
 public class Poison extends ComposantGraphique{
 
-    public Poison(int x, int y, int larg, int haut) {
+    public Poison(double x, double y, int larg, int haut) {
         super(x, y, larg, haut);
     }
 

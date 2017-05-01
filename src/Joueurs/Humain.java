@@ -11,7 +11,7 @@ package Joueurs;
  */
 public class Humain extends Joueur{
 
-    public Humain(int x, int y, int larg, int haut,boolean main, String n) {
+    public Humain(double x, double y, int larg, int haut,boolean main, String n) {
         super(x, y, larg, haut, main);
         nom = n;
     }

@@ -22,7 +22,8 @@ public class Chargeur {
         try{
           fr = new BufferedReader(new FileReader(m));
         }catch(IOException e){
-            System.out.println(e);
+            System.out.println("Chargement du terrain à échoué : "+e);
+            init(prop);
         }
     }
     public void init(Properties prop){
@@ -35,7 +36,7 @@ public class Chargeur {
             taille = Integer.parseInt(ligne);
             Point poison = new Point(fr.readLine());
         
-            Plateau p = new Plateau(poison.x(), poison.y(), taille+5, taille+5, taille, poison , prop);
+            Plateau p = new Plateau(poison.x(), poison.y(), taille+Reglage.lis("lJoueurP"), taille, taille, poison , prop);
         
             ligne = fr.readLine();
         
@@ -43,6 +44,7 @@ public class Chargeur {
                 String[] cases = ligne.split(":");
                 for(int i=0; cases.length > i; i++){
                     Point tmp = new Point(cases[i]);
+                    System.out.println(tmp);
                     p.supprimeComposant(new Case(tmp.x(), tmp.y(), Reglage.lis("tailleCase"), Reglage.lis("tailleCase"), (tmp.equals(poison))) );
                 }
                 ligne=fr.readLine();

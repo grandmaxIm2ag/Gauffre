@@ -13,10 +13,11 @@ package Modele;
 // à la taille de son dessin
 public class Etendeur {
 
-    float x, y, l, h;
-    float factX, factY;
+    double x, y, l, h;
+    public double factX, factY;
 
-    public void fixeEchelle(float fx, float fy) {
+    public void fixeEchelle(double fx, double fy) {
+        //System.out.println(fx+"-"+fy);
         factX = fx;
         factY = fy;
     }
@@ -31,28 +32,34 @@ public class Etendeur {
         l = c.l() * factX;
         h = c.h() * factY;
     }
+    
+    public Point souris(double curseurX, double curseurY){
+        x = curseurX * factX ;
+        y = curseurY * factY ;
+        return new Point((int)x, (int) y );
+    }
 
-    public float posX() {
+    public double posX() {
         return x;
     }
 
-    public float posY() {
+    public double posY() {
         return y;
     }
 
-    public float l() {
+    public double l() {
         return l;
     }
 
-    public float h() {
+    public double h() {
         return h;
     }
 
-    public float factX() {
+    public double factX() {
         return factX;
     }
 
-    public float factY() {
+    public double factY() {
         return factY;
     }
 }

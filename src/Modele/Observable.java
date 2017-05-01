@@ -52,9 +52,8 @@ public class Observable {
             Observateur o = it.next();
             if(o instanceof Case){
                 Case c = (Case) o;
-                tmp = c.location();
-                if(!tmp.equals(p) && tmp.x()>=p.x() && tmp.y()>=p.y()){
-                    res += (":"+tmp);
+                if(c.collision(p)){
+                    res += (":"+c.location());
                 }
             }
         
