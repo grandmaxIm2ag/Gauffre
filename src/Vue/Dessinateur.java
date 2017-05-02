@@ -66,8 +66,8 @@ public class Dessinateur extends Visiteur{
     public boolean visite(Plateau p){
         e.fixeEchelle( c.getWidth() / p.l(),  c.getHeight() / p.h());
         gc.clearRect(0, 0, c.getWidth(), c.getHeight());
-        //gc.setStroke(Color.BLACK);
-        //gc.strokeRect(0, 0, c.getWidth(), c.getHeight());
+        gc.setStroke(Color.BLACK);
+        gc.strokeRect(0, 0, c.getWidth(), c.getHeight());
         return false;
     }
     

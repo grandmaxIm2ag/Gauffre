@@ -71,7 +71,6 @@ public class Plateau extends ComposantGraphique{
         });
     }
     public boolean maj(Point p){
-        System.out.println("PASSÉ");
         return observable.maj(p);
     }
     public boolean estPoison(Point p){
@@ -171,7 +170,6 @@ public class Plateau extends ComposantGraphique{
         return accept(new Visiteur(){
            public boolean visite(Case c){
                if(c.location().equals(coup) && !c.detruit()){
-                   System.out.println(coup+" "+c.location());
                    return true;
                }
                return false;

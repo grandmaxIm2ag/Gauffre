@@ -67,7 +67,7 @@ public class Arbitre {
         }
         
         c.init(prop);
-        type = JvJ;
+        type = JvIA;
         difficulte = Ordinateur.NORMAL;
     }
 
@@ -79,15 +79,15 @@ public class Arbitre {
                 joueurs[J2] = new Humain((double)p.tailleInitiale()+0.5,(double)p.tailleInitiale()*2/3,  Reglage.lis("lJoueur"), Reglage.lis("hJoueur"), false, "Joueur2");
                 break;
             case JvIA:
-                joueurs[J1] = new Humain((double)Reglage.lis("xJoueur1"),(double)Reglage.lis("yJoueur1"),  Reglage.lis("lJoueur"), Reglage.lis("hJoueur"), true, "Joueur1");
-                joueurs[J2] = new Ordinateur((double)Reglage.lis("xJoueur2"),(double)Reglage.lis("yJoueur2"),  Reglage.lis("lJoueur"), Reglage.lis("hJoueur"), false, difficulte);
+                joueurs[J1] = new Humain((double)p.tailleInitiale()+0.5,(double)p.tailleInitiale()/3,  Reglage.lis("lJoueur"), Reglage.lis("hJoueur"), true, "Joueur1");
+                joueurs[J2] = new Ordinateur((double)p.tailleInitiale()+0.5,(double)p.tailleInitiale()*2/3,  Reglage.lis("lJoueur"), Reglage.lis("hJoueur"), false, difficulte);
                 break;
             default:
                 break;
         }
         
-        p.ajoutComposant(joueurs[J1]);
-        p.ajoutComposant(joueurs[J2]);
+        //p.ajoutComposant(joueurs[J1]);
+        //p.ajoutComposant(joueurs[J2]);
     }
 
     public Plateau plateau(){
@@ -97,7 +97,6 @@ public class Arbitre {
     public void joue(Point coup){
         
         if(p.estValide(coup)){
-            System.err.println("Coup joué : "+coup+" est valide ?"+p.estValide(coup) );
             historique.inserer(p.observable().historique(coup));
             p.maj(coup);
 
@@ -113,6 +112,7 @@ public class Arbitre {
                 refaire.extraire();
 
             if(p.estPoison(coup)){
+                
                 if(jCourant==0)
                     jCourant = 1;
                 else
@@ -120,23 +120,13 @@ public class Arbitre {
 
                 joueurs[jCourant].upScore();
 
-                if(joueurs[jCourant].getScore()==Reglage.lis("nbManche")){
-               // p.vider();
-               // p.ajoutComposant(new Message(0,0,p.l(), p.h(),"Joueur "+jCourant+" à gagner"));
-                    Interface.goFin(joueurs[jCourant].getNom());
-                }else{
-                    if(jCourant==0)
-                        jCourant = 1;
-                    else
-                        jCourant=0;
-            
-                    nouvellePlateau();
-                }
+                nouvellePlateau(); 
             }
-        
-
             
-            prochainJoueur();
+            if(joueurs[jCourant].getScore()==Reglage.lis("nbManche")){
+                Interface.goFin(joueurs[jCourant].getNom());
+            }else
+                prochainJoueur();
         }
     }
 
@@ -154,8 +144,6 @@ public class Arbitre {
                return false;
            }
         });
-        System.out.println(cpt);
-        cpt = 0;
     }
 
     public void precedent(){
@@ -165,7 +153,6 @@ public class Arbitre {
             String[] cases = coup.split(":");
             for(int i=0; i<cases.length; i++){
                 Point tmp = new Point(cases[i]);
-                System.out.println(tmp);
                 p.accept(new Visiteur(){
                    public boolean visite(Case c){
                        if(c.location().equals(tmp)){
@@ -211,7 +198,6 @@ public class Arbitre {
     }
     public void chargerPartie(){
         if(plateau!=null && !plateau.equals("(none)")){
-            System.out.println("Ca passe");
             c.init(plateau,prop);
             p=c.charger();
             init();
@@ -225,8 +211,8 @@ public class Arbitre {
     public void nouvellePlateau(){
         c.init(prop);
         p=c.charger();
-        p.ajoutComposant(joueurs[0]);
-        p.ajoutComposant(joueurs[1]);
+        //p.ajoutComposant(joueurs[0]);
+        //p.ajoutComposant(joueurs[1]);
         while(!historique.estVide())
             historique.extraire();
         while(!refaire.estVide())
@@ -270,7 +256,6 @@ public class Arbitre {
           }else{
               str += (":"+fichier.split("/")[2]);
           }
-          System.out.println(str);
         }catch(IOException e){
             System.err.println("Echec de la sauvegarde "+fichier);
         }
@@ -299,7 +284,9 @@ public class Arbitre {
             jCourant=0;
 
         joueurs[jCourant].setMain();
-
+        
+        Interface.infoPartie(joueur(J1), joueur(J2), nbMache(), jCourant);
+        
         if(joueurs[jCourant] instanceof Ordinateur){
             Ordinateur o = (Ordinateur) joueurs[jCourant];
             joue(o.joue(this));
@@ -325,7 +312,7 @@ public class Arbitre {
 
     public void sourisCoup(double curseurX, double curseurY, double canX, double canY){
         Etendeur e = new Etendeur();
-        e.fixeEchelle(p.l()/canX, p.l()/canX);
+        e.fixeEchelle(p.l()/canX, p.h()/canY);
         joue(e.souris(curseurX, curseurY));
     }
     public void sourisPointe(double curseurX, double curseurY, double canX, double canY){
@@ -373,5 +360,12 @@ public class Arbitre {
             default:
                 return null;
         }
+    }
+    
+    public Joueur joueur(int j){
+        return joueurs[j];
+    }
+    public int nbMache(){
+        return Reglage.lis("nbManche");
     }
 }

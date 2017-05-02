@@ -15,6 +15,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
 import Modele.Arbitre;
 import Controlleur.*;
+import Joueurs.Joueur;
+import Joueurs.Ordinateur;
 import Modele.Point;
 import javafx.collections.FXCollections;
 import javafx.event.*;
@@ -31,7 +33,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 /**
  *
@@ -126,15 +130,18 @@ public class Interface extends Application{
         Button b3 = new Button("Refaire");
         Button b4 = new Button("Sauvegarder");
         Button b5 = new Button("Aide");
+        Button menu = new Button("Menu Principale");
         b1.setOnAction(new Bouton(BOUTTON_NOUVEL, arbitre));
         b2.setOnAction(new Bouton(BOUTTON_ANNULER, arbitre));
         b3.setOnAction(new Bouton(BOUTTON_REFAIRE, arbitre));
         b4.setOnAction(new Bouton(BOUTTON_SAUVEGARDER, arbitre));
         b5.setOnAction(new Bouton(BOUTON_AIDE, arbitre));
+        menu.setOnAction(new Bouton(BOUTON_MENU, arbitre));
         paneLeft.add(b1,0,3);
         paneBottom.add(b2, 3,0);
         paneBottom.add(b3, 5, 0);
-        paneLeft.add(b4,0,8);
+        paneLeft.add(b4,0,5);
+        paneLeft.add(menu,0,7);
         paneBottom.add(b5, 7, 0);
 
 
@@ -149,13 +156,19 @@ public class Interface extends Application{
         c.setOnMouseMoved(new Souris(arbitre, SOURIS_BOUGEE,c));
         s.setOnKeyPressed(new Touche(arbitre,0));
 
+        infoPartie(arbitre.joueur(arbitre.J1),arbitre.joueur(arbitre.J2), arbitre.nbMache() ,arbitre.J1 );
     }
     
     public static void goMenu(){
+        b.setRight(new Pane());
+        b.setLeft(new Pane());
+        b.setBottom(new Pane());
+        
         GridPane g = new GridPane();
         g.setHgap(45);
         g.setVgap(20);
         b.setCenter(g);
+        
         
         Button nouv = new Button("Nouvelle partie");
         Button charg = new Button("Charger partie");
@@ -164,29 +177,33 @@ public class Interface extends Application{
         ChoiceBox plateau = new ChoiceBox();
         
         initChoix(difficulte, CHOIX_DIFFICULTE);
+        difficulte.getSelectionModel().select(Ordinateur.NORMAL);  
         initChoix(mode, CHOIX_MODE);
+        mode.getSelectionModel().select(Arbitre.JvIA);
         initChoix(plateau, CHOIX_PLATEAU);
         
         nouv.setOnAction(new Bouton(BOUTTON_NOUVEL, arbitre));
         charg.setOnAction(new Bouton(BOUTON_CHARGER, arbitre));
         
-        g.add(nouv, 4,3);
-        g.add(charg, 6,3);
-        g.add(new Label("Difficulté"), 5,7);
-        g.add(difficulte, 5,8);
-        g.add(new Label("Mode de jeu"), 4,7);
-        g.add(mode, 4,8);
-        g.add(new Label("Choix Plateau"), 6,7);
-        g.add(plateau, 6,8);
+        g.add(nouv, 4,4);
+        g.add(charg, 4,6);
+        g.add(new Label("Difficulté"), 6,3);
+        g.add(difficulte, 6,4);
+        g.add(new Label("Mode de jeu"), 5,3);
+        g.add(mode, 5,4);
+        g.add(new Label("Choix Plateau"), 5,5);
+        g.add(plateau, 5,6);
         
     }
     
     public static void goFin(String gagnant){
-        b.setBottom(new Pane());
         b.setRight(new Pane());
         b.setLeft(new Pane());
+        b.setBottom(new Pane());
         
         Label l = new Label(gagnant+" à remporter la partie");
+        l.setFont(Font.font("Cambria", 25));
+
         Button menu = new Button("Menu Principale");
         Button quitter = new Button("Quitter");
         
@@ -196,10 +213,43 @@ public class Interface extends Application{
         GridPane g = new GridPane();
         g.setVgap(50);
         g.setHgap(10);
-        g.add(l, 5, 2);
-        g.add(menu, 4, 6);
-        g.add(quitter, 6, 6);
+        g.add(l, 10, 2);
+        g.add(menu, 8, 6);
+        g.add(quitter, 12, 6);
         b.setCenter(g);
+        
+        
+    }
+    
+    public static void infoPartie(Joueur j1, Joueur j2, int nbManche, int joueur){
+        Label joueur1 = new Label(j1.getNom()+" : "+j1.getScore());
+        Label joueur2 = new Label(j2.getNom()+" : "+j2.getScore());
+        joueur1.setFont(Font.font("Cambria", 20));
+        joueur2.setFont(Font.font("Cambria", 20));
+        
+        if(joueur==Arbitre.J1){
+            joueur1.setTextFill(Color.RED);
+            joueur2.setTextFill(Color.BLACK);
+        }else{
+            joueur1.setTextFill(Color.BLACK);
+            joueur2.setTextFill(Color.RED);
+        }
+        
+        Label nb = new Label("Match en "+nbManche);
+        nb.setFont(Font.font("Cambria", 20));
+        
+        GridPane g = new GridPane();
+        
+        g.setVgap(20);
+        g.setHgap(0.5);
+        
+        g.add(joueur1, 1, 6);
+        g.add(joueur2, 1, 9);
+        g.add(nb, 1, 12);
+        
+        b.setRight(g);
+        
+        
     }
     
     public static void initChoix(ChoiceBox cb, int c){

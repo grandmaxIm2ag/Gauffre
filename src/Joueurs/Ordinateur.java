@@ -115,6 +115,7 @@ public class Ordinateur extends Joueur{
         }
         if(vc == 1) return 1000 - nbcoups;
         if(vl == 1) return 1000 - nbcoups; 
+        
         return 0;
     }
     
@@ -136,7 +137,7 @@ public class Ordinateur extends Joueur{
         coupIA(choix);
         Point res = convertToPoint(choix);
         res.fixe((int)res.y(), (int)res.x());
-        System.out.println("coup choisi : "+choix+" , "+res);
+        //System.out.println("coup choisi : "+choix+" , "+res);
         return res;
     }
     
@@ -148,8 +149,24 @@ public class Ordinateur extends Joueur{
     }
     
     public Point jouerIANormal(){
-        //TODO
-        return new Point(0,0);
+        int max_poids = -10000;
+        int meilleur_coup = 1;
+
+        for(int i = 1; i < casesJouables.size();i++){
+            LinkedList<Integer> casestmp = (LinkedList<Integer>) casesJouables.clone();
+            coupIA(casesJouables.get(i));
+            int tmp = testconfig(0);
+            if(tmp > max_poids){
+                max_poids = tmp;
+                meilleur_coup = i;
+                
+            }
+            casesJouables =  casestmp;
+            meilleur_coup = casesJouables.get(i);
+        }
+        Point res = convertToPoint(meilleur_coup);
+        res.fixe((int)res.y(),(int) res.x());
+        return res;
     }
     
     public Point jouerIADiff(int profondeur){
@@ -171,7 +188,6 @@ public class Ordinateur extends Joueur{
         }
         Point res = convertToPoint(meilleur_coup);
         res.fixe((int)res.y(),(int) res.x());
-        System.out.println("coup choisi : "+meilleur_coup+" , "+res);
         return res;
     }
     

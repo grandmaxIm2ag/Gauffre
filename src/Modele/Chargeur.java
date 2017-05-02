@@ -36,7 +36,7 @@ public class Chargeur {
             taille = Integer.parseInt(ligne);
             Point poison = new Point(fr.readLine());
         
-            Plateau p = new Plateau(poison.x(), poison.y(), taille+Reglage.lis("lJoueurP"), taille, taille, poison , prop);
+            Plateau p = new Plateau(poison.x(), poison.y(), taille, taille, taille, poison , prop);
         
             ligne = fr.readLine();
         
