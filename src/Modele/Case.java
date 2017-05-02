@@ -62,8 +62,10 @@ public class Case extends ComposantGraphique implements Observateur{
 
     @Override
     public boolean maj(Point p) {
-        if(pointe() || aPointe())
+        if(p.x()<=this.x() && p.y()<=this.y()){
+            System.out.println("passé"+location());
             return ((propriete[DETRUIT] = true));
+            }
         return false;
     }
 

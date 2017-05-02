@@ -95,54 +95,49 @@ public class Arbitre {
     }
 
     public void joue(Point coup){
-        historique.inserer(p.observable().historique(coup));
-        p.maj(coup);
+        
+        if(p.estValide(coup)){
+            System.err.println("Coup joué : "+coup+" est valide ?"+p.estValide(coup) );
+            historique.inserer(p.observable().historique(coup));
+            p.maj(coup);
 
-        p.accept(new Visiteur(){
-           public boolean visite(Case c){
-               c.location().equals(h);
-               c.fixeProp(c.AIDE, false);
-               return false;
-           }
-        });
+            p.accept(new Visiteur(){
+                public boolean visite(Case c){
+                    c.location().equals(h);
+                    c.fixeProp(c.AIDE, false);
+                    return false;
+                }
+            });
 
-        while(!refaire.estVide())
-            refaire.extraire();
+            while(!refaire.estVide())
+                refaire.extraire();
 
-        if(p.estPoison(coup)){
-            if(jCourant==0)
-                jCourant = 1;
-            else
-                jCourant=0;
-
-            joueurs[jCourant].upScore();
-
-            if(joueurs[jCourant].getScore()==Reglage.lis("nbManche")){
-               // p.vider();
-               // p.ajoutComposant(new Message(0,0,p.l(), p.h(),"Joueur "+jCourant+" à gagner"));
-               Interface.goFin(joueurs[jCourant].getNom());
-            }else{
+            if(p.estPoison(coup)){
                 if(jCourant==0)
                     jCourant = 1;
                 else
                     jCourant=0;
-            
-                 nouvellePlateau();
-            }
-        }
 
-        if(estAide){
-            p.accept(new Visiteur(){
-               public boolean visite(Case c){
-                   if(c.aide()){
-                       c.fixeProp(Case.DETRUIT, false);
-                   }
-                   return false;
-               }
-            });
-            estAide = false;
+                joueurs[jCourant].upScore();
+
+                if(joueurs[jCourant].getScore()==Reglage.lis("nbManche")){
+               // p.vider();
+               // p.ajoutComposant(new Message(0,0,p.l(), p.h(),"Joueur "+jCourant+" à gagner"));
+                    Interface.goFin(joueurs[jCourant].getNom());
+                }else{
+                    if(jCourant==0)
+                        jCourant = 1;
+                    else
+                        jCourant=0;
+            
+                    nouvellePlateau();
+                }
+            }
+        
+
+            
+            prochainJoueur();
         }
-        prochainJoueur();
     }
 
     public void help(){
@@ -205,6 +200,7 @@ public class Arbitre {
     }
 
     public void nouvellePartie(){
+        c.init(prop);
         p=c.charger();
         init();
         while(!historique.estVide())
